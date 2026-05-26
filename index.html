@@ -489,6 +489,42 @@
   }
   .quote-tag.cheaper { background: var(--leaf); }
 
+  .transport-band {
+    background: linear-gradient(135deg, #fff6e3, #f4ede0);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+  }
+  .transport-lbl {
+    font-family: 'Manrope', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .transport-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .transport-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .transport-item .emo {
+    font-size: 16px;
+  }
+
   .actions {
     display: flex;
     gap: 8px;
@@ -561,8 +597,8 @@
   <header>
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
-    <div class="sub">Comparatif des hébergements près de La Rochelle (+ Saint-Brévin) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 25 mai 2026 — Devis VVF + Odalys Saint-Brévin</div>
+    <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
+    <div class="last-updated">Mis à jour le 26 mai 2026 — 3 nouvelles options Vendée/Charente</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -597,6 +633,10 @@ const DATA = [
     climatisation: '⚠️ Selon modèle (Pirate = clim ✅)',
     gareDist: '5 min à pied (400 m)',
     plageDist: '300 m',
+    transportLR: {
+      car: '20 km (~25 min)',
+      train: 'TER 7 min · gare à pied'
+    },
     quotes: [
       {
         label: 'Option 1 — Corsaire 4/6 pers (Babord)',
@@ -662,6 +702,10 @@ const DATA = [
     climatisation: 'À confirmer',
     gareDist: '1,5 km (voiture / vélo)',
     plageDist: '300 m',
+    transportLR: {
+      car: '20 km (~25 min)',
+      train: 'TER Châtelaillon 7 min + 1,5 km'
+    },
     pros: [
       '✅ Dispo confirmée par Angelique Moreau (réception)',
       'Le plus calme et authentique',
@@ -701,6 +745,10 @@ const DATA = [
     climatisation: '✅ Oui',
     gareDist: '15-20 min à pied (1,5 km)',
     plageDist: '15 min à pied (Les Minimes)',
+    transportLR: {
+      car: 'Centre-ville La Rochelle',
+      train: 'Gare La Rochelle à pied'
+    },
     pros: [
       'Appartement T3 47 m² climatisé',
       'Vie urbaine, restos, aquarium',
@@ -731,6 +779,10 @@ const DATA = [
     climatisation: 'À confirmer',
     gareDist: '26 km de La Rochelle',
     plageDist: '800 m',
+    transportLR: {
+      car: '26 km (~40 min, péage 8 €)',
+      train: 'Pas de train · bus Île de Ré'
+    },
     pros: [
       '✨ Pension complète OU demi-pension',
       'Zéro logistique repas',
@@ -762,6 +814,10 @@ const DATA = [
     climatisation: 'Non',
     gareDist: '25 km (voiture + bus)',
     plageDist: '15 min à pied (1 km)',
+    transportLR: {
+      car: '25 km (~40 min, péage 8 €)',
+      train: 'Pas de train · bus Île de Ré'
+    },
     pros: [
       'Mobil-home 6 pers : 3 chambres',
       '11 ha de pinède, calme absolu',
@@ -793,6 +849,10 @@ const DATA = [
     climatisation: 'À confirmer',
     gareDist: '20 km (voiture + péage 8 €)',
     plageDist: '100 m face à la mer ✨',
+    transportLR: {
+      car: '20 km (~35 min, péage 8 €)',
+      train: 'Pas de train · bus Île de Ré'
+    },
     quotes: [
       {
         label: 'Logement 4 pièces 8 pers.',
@@ -842,6 +902,10 @@ const DATA = [
     climatisation: 'À confirmer',
     gareDist: '20 km La Rochelle (péage 8 €)',
     plageDist: '300 m (plage des Grenettes)',
+    transportLR: {
+      car: '20 km (~35 min, péage 8 €)',
+      train: 'Pas de train · bus Île de Ré'
+    },
     pros: [
       '🌟 Camping 5★ très haut de gamme',
       'Mobil-home Premium 2 ch + 2 SDB',
@@ -875,6 +939,10 @@ const DATA = [
     climatisation: 'À confirmer',
     gareDist: '25 km La Rochelle (péage 8 €)',
     plageDist: '50 m (plage du Gros Jonc) ✨',
+    transportLR: {
+      car: '25 km (~40 min, péage 8 €)',
+      train: 'Pas de train · bus Île de Ré'
+    },
     pros: [
       '🌟 Camping 5★ Sandaya premium',
       '✨ 50 m de la plage (record)',
@@ -907,6 +975,10 @@ const DATA = [
     climatisation: 'À confirmer',
     gareDist: '~190 km de La Rochelle (2h25 voiture / 3h30 train)',
     plageDist: '600 m (grande plage)',
+    transportLR: {
+      car: '188 km · 2h25 (péage ~10 €)',
+      train: '3h30-4h via Nantes/St-Nazaire'
+    },
     pros: [
       '🏠 Établissement bien connu (séjours Pâques jusqu\'en 2025)',
       '👨‍👩‍👧‍👦 Famille à proximité à Saint-Brévin',
@@ -925,6 +997,122 @@ const DATA = [
     ],
     notes: 'Mail envoyé le 25/05 à odalys@odalys-vacances.com avec copie domaineocean@odalys-vacances.com. Argument fidélité (séjours Pâques jusqu\'en 2025), demande tarif long séjour 21 nuits. Famille sur place à Saint-Brévin. Trajet La Rochelle : 2h25 voiture (188 km, péage ~10 €) / 3h30-4h train via Nantes-Saint-Nazaire.',
     url: 'https://www.odalys-vacances.com/location-mer/pays-de-la-loire/saint-brevin-l-ocean/le-domaine-de-l-ocean.html'
+  },
+  {
+    id: 'pvbaiedessables',
+    num: '10',
+    title: 'Pierre & Vacances La Baie des Sables',
+    stars: '★★★',
+    place: 'Les Sables d\'Olonne (85 — Vendée)',
+    tags: ['Appart T3', '100 m plage', 'Train direct'],
+    status: 'attente',
+    price: '~ 2 500–3 800 €',
+    priceConfirmed: '',
+    contact: 'info@pierreetvacances.com · 01 73 27 55 90',
+    chambres: 'T3 60 m² 6 pers. demandé',
+    climatisation: 'Probablement non',
+    gareDist: '5-12 min à pied (840 m)',
+    plageDist: '100 m de la Grande Plage ✨',
+    transportLR: {
+      car: '160 km · ~1h50',
+      train: '🌟 1h46 direct (Intercités)'
+    },
+    pros: [
+      '🌟 Train DIRECT depuis La Rochelle (1h46)',
+      '🚶 Gare à 5-12 min à pied de la résidence',
+      '✨ 100 m de la Grande Plage en plein centre',
+      '🛒 Rue piétonne, port, commerces à pied',
+      'Halles centrales et marché à 5 min à pied',
+      'Idéal sans voiture (semaine seul)',
+      'Label Clef Verte',
+      'Vendée : nouvelle région à explorer'
+    ],
+    cons: [
+      '⚠️ Studios 4 pers avec lits superposés (alcôve)',
+      '⚠️ Pour 2 vraies chambres : T3 60 m² 6 pers nécessaire',
+      'Probablement pas de climatisation',
+      'Parking en supplément (payant)',
+      'Hors zone La Rochelle directe'
+    ],
+    notes: 'Mail envoyé le 26/05 à info@pierreetvacances.com (centrale réservation). Demande spécifiquement un T3 60 m² 6 pers pour avoir 2 vraies chambres séparées (les studios 4 pers ont lits superposés en alcôve, non adaptés). Train direct Intercités La Rochelle ↔ Les Sables 1h46 (4 trains/jour). Adresse : 28 Cours Blossac, 85100 Les Sables-d\'Olonne.',
+    url: 'https://www.pierreetvacances.com/fr-fr/fp_08L_location-residence-la-baie-des-sables'
+  },
+  {
+    id: 'odalysroyan',
+    num: '11',
+    title: 'Odalys L\'Orée du Parc',
+    stars: '★★★',
+    place: 'Royan (17 — Charente-Maritime)',
+    tags: ['Appart 3 pièces', '150 m plage', 'Fidélité Odalys'],
+    status: 'attente',
+    price: '~ 2 700–3 800 €',
+    priceConfirmed: '',
+    contact: 'odalys@odalys-vacances.com · 04 11 93 22 22',
+    chambres: '3 pièces 4-6 pers (2 ch.)',
+    climatisation: 'À confirmer',
+    gareDist: 'Gare Royan à proximité',
+    plageDist: '150 m de la plage ✨',
+    transportLR: {
+      car: '100 km · ~1h15',
+      train: '~2h (changement à Saintes)'
+    },
+    pros: [
+      '✨ 150 m de la plage',
+      '🛒 700 m du centre-ville et commerces',
+      '🏠 Réseau Odalys connu (fidélité argumentée)',
+      'Appartements 2-3 pièces avec balcon',
+      'Modernes et bien équipés',
+      'Quartier résidentiel du Parc',
+      'Engagement environnemental Odalys',
+      'Possibilité accessible PMR'
+    ],
+    cons: [
+      'Train avec changement à Saintes (~2h)',
+      'Pas de pension/restauration sur place',
+      'Climatisation à confirmer',
+      'Centre-ville à 700 m (pas à pied immédiat)'
+    ],
+    notes: 'Mail envoyé le 26/05 à odalys@odalys-vacances.com (centrale Odalys). Argument fidélité Saint-Brévin mis en avant. Demande tarif long séjour 21 nuits. Train La Rochelle → Royan : ~2h avec correspondance Saintes. Voiture : 100 km, ~1h15 sans péage.',
+    url: 'https://www.odalys-vacances.com/location-mer/poitou-charentes/royan/l-oree-du-parc.html'
+  },
+  {
+    id: 'villageclubsoleilronce',
+    num: '12',
+    title: 'Village Club du Soleil — Ronce-les-Bains',
+    stars: '★★★',
+    place: 'Ronce-les-Bains / La Tremblade (17)',
+    tags: ['Village club', 'Pension complète', 'Clubs enfants'],
+    status: 'attente',
+    price: '~ 3 800–5 500 €',
+    priceConfirmed: '',
+    contact: 'roncelesbains@lesvillagesclubsdusoleil.com · 05 46 36 06 09',
+    chambres: '2 ch (à confirmer)',
+    climatisation: 'À confirmer',
+    gareDist: '30 km gare Saujon/Royan',
+    plageDist: '600 m de la plage',
+    transportLR: {
+      car: '70 km · ~1h15',
+      train: 'Pas direct · Saujon/Royan + bus'
+    },
+    pros: [
+      '🍽️ FORMULE TOUT COMPRIS pension complète',
+      'Demi-pension également possible',
+      '👶 Clubs enfants 3 Lutins (Bleus/Blancs/Rouges)',
+      'Animations adultes et activités sportives',
+      'Note 4,5/5 (avis très positifs)',
+      'Tourisme social certifié',
+      'Face île d\'Oléron, environnement pinède',
+      'Matériel prêté (raquettes, vélos...)'
+    ],
+    cons: [
+      '💰 Budget probablement > 4 000 € en pension complète',
+      'Pas de gare directe (30 km Saujon/Royan + bus)',
+      '6 min à pied du casino, 600 m plage',
+      'Clubs ados (13-18) à confirmer',
+      'Lits superposés possibles à vérifier'
+    ],
+    notes: 'Mail envoyé le 26/05 à roncelesbains@lesvillagesclubsdusoleil.com. Demande formule pension complète + comparatif demi-pension, clubs ados, tarif long séjour 21 nuits. Voiture conseillée : 70 km / 1h15 de La Rochelle. Pas de train direct : Saujon ou Royan (30 km) + bus carabus.',
+    url: 'https://www.villagesclubsdusoleil.com/fr/nos-destinations/sejour-a-la-mer/ronce-les-bains'
   }
 ];
 
@@ -1049,6 +1237,16 @@ function renderCard(d, dim) {
               <div class="val">${d.priceConfirmed || d.price}<small>${d.priceConfirmed ? ' · confirmé' : ' · estimation'}</small></div>
             </div>
           </div>
+
+          ${d.transportLR ? `
+            <div class="transport-band">
+              <div class="transport-lbl">🛣️ Trajet vers La Rochelle</div>
+              <div class="transport-grid">
+                <div class="transport-item"><span class="emo">🚗</span><span>${d.transportLR.car}</span></div>
+                <div class="transport-item"><span class="emo">🚆</span><span>${d.transportLR.train}</span></div>
+              </div>
+            </div>
+          ` : ''}
 
           <div class="grid-info">
             <div class="info-cell">
