@@ -2373,11 +2373,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fetchAppState().then(() => rerenderKeepingOpen());
     }
   });
-
-  // Empêcher fermeture carte au clic sur input/bouton commentaire
-  document.addEventListener('click', e => {
-    if (e.target.closest('.social-zone')) e.stopPropagation();
-  }, true);
 });
 
 function checkAuthFormValid() {
