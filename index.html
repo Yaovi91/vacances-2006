@@ -524,6 +524,29 @@
   .transport-item .emo {
     font-size: 16px;
   }
+  .transport-band.transport-smo {
+    background: linear-gradient(135deg, #e8f4f7, #d9eaf0);
+    margin-top: -6px;
+  }
+  .transport-smo-total {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .transport-smo-mode {
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .transport-smo-steps {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
 
   .actions {
     display: flex;
@@ -598,7 +621,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 26 mai 2026 — Devis Odalys Archipel reçu (5 120 €, hors budget)</div>
+    <div class="last-updated">Mis à jour le 26 mai 2026 — Trajets retour vers St-Michel-sur-Orge ajoutés</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -636,6 +659,10 @@ const DATA = [
     transportLR: {
       car: '20 km (~25 min)',
       train: 'TER 7 min · gare à pied'
+    },
+    transportSMO: {
+      total: '~4h-4h30',
+      steps: '🚆 TER Châtelaillon → La Rochelle (7 min)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro M4 + M14 ou M6 vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     quotes: [
       {
@@ -706,6 +733,10 @@ const DATA = [
       car: '20 km (~25 min)',
       train: 'TER Châtelaillon 7 min + 1,5 km'
     },
+    transportSMO: {
+      total: '~4h30-5h',
+      steps: '🚗/🚲 Camping → Gare Châtelaillon (1,5 km)<br>🚆 TER Châtelaillon → La Rochelle (7 min)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
+    },
     pros: [
       '✅ Dispo confirmée par Angelique Moreau (réception)',
       'Le plus calme et authentique',
@@ -749,6 +780,10 @@ const DATA = [
     transportLR: {
       car: 'Centre-ville La Rochelle',
       train: 'Gare La Rochelle à pied'
+    },
+    transportSMO: {
+      total: '~4h-4h30',
+      steps: '🚶 Résidence → Gare La Rochelle (15-20 min à pied)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     pros: [
       'Appartement climatisé ✨',
@@ -799,6 +834,10 @@ const DATA = [
       car: '26 km (~40 min, péage 8 €)',
       train: 'Pas de train · bus Île de Ré'
     },
+    transportSMO: {
+      total: '~6h-7h',
+      steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
+    },
     pros: [
       '✨ Pension complète OU demi-pension',
       'Zéro logistique repas',
@@ -834,6 +873,10 @@ const DATA = [
       car: '25 km (~40 min, péage 8 €)',
       train: 'Pas de train · bus Île de Ré'
     },
+    transportSMO: {
+      total: '~6h-7h',
+      steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
+    },
     pros: [
       'Mobil-home 6 pers : 3 chambres',
       '11 ha de pinède, calme absolu',
@@ -868,6 +911,10 @@ const DATA = [
     transportLR: {
       car: '20 km (~35 min, péage 8 €)',
       train: 'Pas de train · bus Île de Ré'
+    },
+    transportSMO: {
+      total: '~6h-7h',
+      steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
     },
     quotes: [
       {
@@ -922,6 +969,10 @@ const DATA = [
       car: '20 km (~35 min, péage 8 €)',
       train: 'Pas de train · bus Île de Ré'
     },
+    transportSMO: {
+      total: '~6h-7h',
+      steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
+    },
     pros: [
       '🌟 Camping 5★ très haut de gamme',
       'Mobil-home Premium 2 ch + 2 SDB',
@@ -959,6 +1010,10 @@ const DATA = [
       car: '25 km (~40 min, péage 8 €)',
       train: 'Pas de train · bus Île de Ré'
     },
+    transportSMO: {
+      total: '~6h-7h',
+      steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
+    },
     pros: [
       '🌟 Camping 5★ Sandaya premium',
       '✨ 50 m de la plage (record)',
@@ -994,6 +1049,10 @@ const DATA = [
     transportLR: {
       car: '188 km · 2h25 (péage ~10 €)',
       train: '3h30-4h via Nantes/St-Nazaire'
+    },
+    transportSMO: {
+      total: '~5h30-6h',
+      steps: '🚌 Saint-Brévin → Nantes (~1h)<br>🚄 TGV Nantes → Paris Montparnasse (~2h05)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>🚗 Voiture : ~6h30 directes via Bordeaux/A10'
     },
     pros: [
       '🏠 Établissement bien connu (séjours Pâques jusqu\'en 2025)',
@@ -1032,6 +1091,10 @@ const DATA = [
     transportLR: {
       car: '160 km · ~1h50',
       train: '🌟 1h46 direct (Intercités)'
+    },
+    transportSMO: {
+      total: '~5h-5h30',
+      steps: '🚶 Résidence → Gare Les Sables (5-12 min à pied)<br>🚆 Intercités Les Sables → Nantes (~1h15)<br>🚄 TGV Nantes → Paris Montparnasse (~2h05)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     pros: [
       '🌟 Train DIRECT depuis La Rochelle (1h46)',
@@ -1072,6 +1135,10 @@ const DATA = [
       car: '100 km · ~1h15',
       train: '~2h (changement à Saintes)'
     },
+    transportSMO: {
+      total: '~5h-5h30',
+      steps: '🚆 TER Royan → Saintes (~30 min)<br>🚄 TGV Saintes → Paris Montparnasse (via Niort/Poitiers, ~3h)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
+    },
     pros: [
       '✨ 150 m de la plage',
       '🛒 700 m du centre-ville et commerces',
@@ -1097,18 +1164,22 @@ const DATA = [
     title: 'Village Club du Soleil — Ronce-les-Bains',
     stars: '★★★',
     place: 'Ronce-les-Bains / La Tremblade (17)',
-    tags: ['Village club', 'Pension complète', 'Clubs enfants'],
-    status: 'attente',
+    tags: ['Village club', 'Pension complète', '☎️ Centrale tél.'],
+    status: 'relance',
     price: '~ 3 800–5 500 €',
     priceConfirmed: '',
-    contact: 'roncelesbains@lesvillagesclubsdusoleil.com · 05 46 36 06 09',
-    chambres: '2 ch (à confirmer)',
-    climatisation: 'À confirmer',
+    contact: '☎️ Centrale : 04 91 04 87 04 (L-V 9h-18h)',
+    chambres: '2 ch (à confirmer par tél.)',
+    climatisation: 'À confirmer par tél.',
     gareDist: '30 km gare Saujon/Royan',
     plageDist: '600 m de la plage',
     transportLR: {
       car: '70 km · ~1h15',
       train: 'Pas direct · Saujon/Royan + bus'
+    },
+    transportSMO: {
+      total: '~6h-7h',
+      steps: '🚌 Ronce → Saujon ou Royan (bus, ~30-45 min)<br>🚆 TER → Saintes (~30 min)<br>🚄 TGV Saintes → Paris Montparnasse (~3h)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (~5h30 directes Paris)'
     },
     pros: [
       '🍽️ FORMULE TOUT COMPRIS pension complète',
@@ -1121,13 +1192,14 @@ const DATA = [
       'Matériel prêté (raquettes, vélos...)'
     ],
     cons: [
+      '📞 Devis UNIQUEMENT par téléphone (pas par mail)',
       '💰 Budget probablement > 4 000 € en pension complète',
       'Pas de gare directe (30 km Saujon/Royan + bus)',
       '6 min à pied du casino, 600 m plage',
       'Clubs ados (13-18) à confirmer',
       'Lits superposés possibles à vérifier'
     ],
-    notes: 'Mail envoyé le 26/05 à roncelesbains@lesvillagesclubsdusoleil.com. Demande formule pension complète + comparatif demi-pension, clubs ados, tarif long séjour 21 nuits. Voiture conseillée : 70 km / 1h15 de La Rochelle. Pas de train direct : Saujon ou Royan (30 km) + bus carabus.',
+    notes: '⚠️ Réponse 26/05 12h06 : l\'équipe locale de Ronce-les-Bains redirige vers la CENTRALE de réservations Villages Clubs du Soleil au ☎️ 04 91 04 87 04 (L-V 9h-18h, S 9h-17h). Aucun devis par mail possible. À APPELER pour : 3 semaines 08→29/08, 4 pers. (2 ad. + ados 13/18), 2 ch. séparées, pension complète + comparatif demi-pension, clubs ados, tarif long séjour 21 nuits, conditions annulation.',
     url: 'https://www.villagesclubsdusoleil.com/fr/nos-destinations/sejour-a-la-mer/ronce-les-bains'
   }
 ];
@@ -1261,6 +1333,14 @@ function renderCard(d, dim) {
                 <div class="transport-item"><span class="emo">🚗</span><span>${d.transportLR.car}</span></div>
                 <div class="transport-item"><span class="emo">🚆</span><span>${d.transportLR.train}</span></div>
               </div>
+            </div>
+          ` : ''}
+
+          ${d.transportSMO ? `
+            <div class="transport-band transport-smo">
+              <div class="transport-lbl">🏠 Trajet retour à St-Michel-sur-Orge</div>
+              <div class="transport-smo-total">⏱️ ${d.transportSMO.total} <span class="transport-smo-mode">en train (porte à porte)</span></div>
+              <div class="transport-smo-steps">${d.transportSMO.steps}</div>
             </div>
           ` : ''}
 
