@@ -613,9 +613,498 @@
     .grid-info { grid-template-columns: repeat(4, 1fr); }
   }
 
+  /* ============ AUTH OVERLAY ============ */
+  .auth-overlay {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #2a6f7a, #1d4f57);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .auth-modal {
+    background: white;
+    border-radius: 24px;
+    padding: 28px 24px;
+    max-width: 420px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .auth-emoji { font-size: 48px; margin-bottom: 8px; }
+  .auth-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .auth-subtitle {
+    color: var(--ink-soft);
+    margin: 0 0 24px;
+    font-size: 14px;
+  }
+  .auth-members {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .auth-member-btn {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--sand);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+  }
+  .auth-member-btn:active { transform: scale(0.97); }
+  .auth-member-btn:hover { border-color: var(--sea); }
+  .auth-member-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .auth-member-name { font-weight: 600; color: var(--ink); }
+  .auth-member-meta { font-size: 11px; color: var(--ink-soft); }
+  .auth-divider {
+    margin: 20px 0 16px;
+    position: relative;
+    display: flex; align-items: center;
+    color: var(--grey);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.08);
+  }
+  .auth-divider span { padding: 0 12px; }
+  .auth-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--ink);
+    margin-bottom: 14px;
+    box-sizing: border-box;
+  }
+  .auth-input:focus { outline: none; border-color: var(--sea); }
+  .auth-color-label {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-soft);
+    margin-bottom: 8px; text-align: left;
+  }
+  .auth-colors {
+    display: grid; grid-template-columns: repeat(8, 1fr);
+    gap: 6px; margin-bottom: 18px;
+  }
+  .auth-color {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    padding: 0;
+  }
+  .auth-color.selected {
+    border-color: var(--ink);
+    transform: scale(1.15);
+  }
+  .auth-btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--sea);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .auth-btn-primary:disabled {
+    opacity: 0.4; cursor: not-allowed;
+  }
+  .auth-btn-primary:active:not(:disabled) { transform: scale(0.97); }
+  .auth-loading {
+    padding: 30px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .auth-spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--sand);
+    border-top-color: var(--sea);
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .auth-error {
+    background: #fee;
+    color: #c25862;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  /* ============ USER BAR ============ */
+  .user-bar {
+    position: sticky; top: 0;
+    background: white;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    z-index: 100;
+    padding: 8px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .user-bar-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-info {
+    display: flex; align-items: center; gap: 10px;
+    flex: 1; min-width: 0;
+  }
+  .user-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .user-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .user-status { font-size: 10px; color: var(--ink-soft); }
+  .sync-indicator { transition: color 0.3s; }
+  .sync-indicator.synced { color: var(--leaf); }
+  .sync-indicator.syncing { color: var(--gold); }
+  .sync-indicator.error { color: var(--rose); }
+  .btn-team, .btn-logout {
+    background: var(--sand-2);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-team { white-space: nowrap; }
+  .btn-logout {
+    width: 36px; height: 36px;
+    padding: 0;
+    font-size: 16px;
+  }
+  .btn-team:active, .btn-logout:active { transform: scale(0.95); }
+  .btn-team:hover, .btn-logout:hover { background: #d4c4a0; }
+
+  /* ============ SOCIAL ZONE ============ */
+  .social-zone {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px dashed rgba(0,0,0,0.08);
+  }
+  .social-header {
+    font-family: 'Manrope', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .social-actions {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .social-btn {
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: white;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: all 0.15s;
+  }
+  .social-btn:active { transform: scale(0.95); }
+  .social-btn.liked {
+    background: #fce7e7;
+    border-color: var(--rose);
+    color: var(--rose);
+  }
+  .social-btn.ranked {
+    background: #fef3d4;
+    border-color: var(--gold);
+    color: #8a6b1f;
+  }
+  .likes-display {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .likes-avatars { display: flex; }
+  .like-avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 10px;
+    border: 2px solid white;
+    margin-left: -6px;
+  }
+  .like-avatar:first-child { margin-left: 0; }
+  .rankings-display {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .ranking-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .comments-list {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .comment {
+    background: var(--sand);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .comment-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 4px;
+  }
+  .comment-avatar {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 10px;
+  }
+  .comment-author {
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--ink);
+  }
+  .comment-time {
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-left: auto;
+  }
+  .comment-text {
+    color: var(--ink);
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+  .comment-form {
+    display: flex; gap: 6px;
+    margin-top: 8px;
+  }
+  .comment-input {
+    flex: 1;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ink);
+    min-width: 0;
+  }
+  .comment-input:focus { outline: none; border-color: var(--sea); }
+  .comment-send {
+    background: var(--sea);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .comment-send:active { transform: scale(0.95); }
+
+  /* ============ MODALES ============ */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(26,34,56,0.7);
+    z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--sand);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .modal-box h2 { margin: 0 0 6px; font-family: 'Fraunces', serif; font-size: 22px; }
+  .modal-box h3 { margin: 16px 0 8px; font-size: 14px; }
+  .modal-desc { color: var(--ink-soft); font-size: 12px; margin: 0 0 16px; }
+
+  .rank-options { display: flex; flex-direction: column; gap: 8px; }
+  .rank-option {
+    border: 2px solid rgba(0,0,0,0.08);
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+    transition: all 0.15s;
+  }
+  .rank-option:hover { border-color: var(--gold); }
+  .rank-option.selected { background: #fef3d4; border-color: var(--gold); }
+  .rank-option .medal { font-size: 20px; margin-right: 6px; }
+  .rank-taken { font-size: 10px; color: var(--ink-soft); font-weight: 500; text-align: right; }
+  .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+  .modal-actions button {
+    flex: 1; padding: 10px; border-radius: 10px; border: none;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .btn-secondary { background: var(--sand); color: var(--ink); }
+  .btn-primary { background: var(--sea); color: white; }
+
+  .team-rank-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    background: var(--sand);
+    border-radius: 12px;
+    margin-bottom: 6px;
+  }
+  .team-rank-row.gold { background: linear-gradient(135deg, #fef3d4, #fae8a8); }
+  .team-rank-row.silver { background: linear-gradient(135deg, #e8e8ec, #d6d6dc); }
+  .team-rank-row.bronze { background: linear-gradient(135deg, #f4d5b3, #e8c194); }
+  .team-rank-pos { font-size: 18px; font-weight: 800; min-width: 36px; }
+  .team-rank-info { flex: 1; min-width: 0; }
+  .team-rank-name { font-weight: 700; font-size: 13px; overflow: hidden; text-overflow: ellipsis; }
+  .team-rank-detail { font-size: 11px; color: var(--ink-soft); }
+  .team-rank-score { font-weight: 800; font-size: 18px; color: var(--sea); }
+  .team-member-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+  }
+  .member-avatar-sm {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 12px;
+  }
+
 </style>
 </head>
 <body>
+
+<!-- ÉCRAN D'IDENTIFICATION -->
+<div id="auth-overlay" class="auth-overlay" style="display:none;">
+  <div class="auth-modal">
+    <div class="auth-emoji">🏖️</div>
+    <h2 class="auth-title">Vacances Famille — Août 2026</h2>
+    <p class="auth-subtitle">Bienvenue ! Qui es-tu ?</p>
+
+    <div id="auth-loading" class="auth-loading">
+      <div class="auth-spinner"></div>
+      <div>Connexion au cloud...</div>
+    </div>
+
+    <div id="auth-existing-members" class="auth-members" style="display:none;"></div>
+
+    <div id="auth-create-section" style="display:none;">
+      <div class="auth-divider"><span>ou crée ton profil</span></div>
+      <input type="text" id="auth-name-input" class="auth-input" placeholder="Ton prénom..." maxlength="20" />
+      <div class="auth-color-label">Choisis ta couleur</div>
+      <div class="auth-colors" id="auth-colors">
+        <button class="auth-color" data-color="#2a6f7a" style="background:#2a6f7a"></button>
+        <button class="auth-color" data-color="#c25862" style="background:#c25862"></button>
+        <button class="auth-color" data-color="#c89b3c" style="background:#c89b3c"></button>
+        <button class="auth-color" data-color="#5a8a4a" style="background:#5a8a4a"></button>
+        <button class="auth-color" data-color="#d96846" style="background:#d96846"></button>
+        <button class="auth-color" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+        <button class="auth-color" data-color="#0ea5e9" style="background:#0ea5e9"></button>
+        <button class="auth-color" data-color="#ec4899" style="background:#ec4899"></button>
+      </div>
+      <button id="auth-create-btn" class="auth-btn-primary" disabled>Rejoindre la famille</button>
+    </div>
+
+    <div id="auth-error" class="auth-error" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- BANDEAU UTILISATEUR -->
+<div id="user-bar" class="user-bar" style="display:none;">
+  <div class="user-bar-inner">
+    <div class="user-info">
+      <div id="user-avatar" class="user-avatar"></div>
+      <div style="min-width:0;flex:1">
+        <div id="user-name" class="user-name"></div>
+        <div class="user-status">
+          <span id="sync-indicator" class="sync-indicator">⏱️ Synchro...</span>
+        </div>
+      </div>
+    </div>
+    <button id="btn-team" class="btn-team">🏆 Top famille</button>
+    <button id="btn-logout" class="btn-logout" title="Changer de membre">⇄</button>
+  </div>
+</div>
+
+<!-- MODAL TOP FAMILLE -->
+<div id="team-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeTeamModal()">✕</button>
+    <h2>🏆 Classement Famille</h2>
+    <p class="modal-desc">Score = ❤️ × 2 + ⭐ classement perso (10 pts top 1, 7 pts top 2, 5 pts top 3)</p>
+    <div id="team-rankings"></div>
+    <h3>👥 Membres</h3>
+    <div id="team-members-list"></div>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -623,7 +1112,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — Trajets retour vers St-Michel-sur-Orge inclus</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — 🎉 Mode collaboratif famille activé !</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -1386,6 +1875,8 @@ function renderCard(d, dim) {
 
           ${extraLinksBlock}
 
+          ${currentUser ? renderSocialZone(d.id) : ''}
+
           <div class="actions">
             <a href="${d.url}" target="_blank" rel="noopener" class="btn">Voir le site →</a>
           </div>
@@ -1416,7 +1907,486 @@ function toggle(id) {
   if (card) card.classList.toggle('open');
 }
 
+// =================== MODE COLLABORATIF FAMILLE ===================
+
+const JSONBIN_CONFIG = {
+  binId: '6a199c8e21f9ee59d299fcc2',
+  accessKey: '$2a$10$0ADRQptqzjyGdI3Pgu9cIu37JqbN3R3RNLKbgWdLlulpF8UDzJlQq',
+  apiUrl: 'https://api.jsonbin.io/v3/b/'
+};
+
+let currentUser = null;
+let appState = { members: [], interactions: {}, version: 1 };
+let selectedAuthColor = null;
+let syncInProgress = false;
+
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+function getInitials(name) { return name.trim().substring(0, 2).toUpperCase(); }
+function getMember(id) { return appState.members.find(m => m.id === id); }
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+function formatTimeAgo(iso) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return 'à l\'instant';
+  if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `il y a ${Math.floor(diff / 3600)} h`;
+  if (diff < 604800) return `il y a ${Math.floor(diff / 86400)} j`;
+  return new Date(iso).toLocaleDateString('fr-FR');
+}
+function updateSyncIndicator(state, message) {
+  const ind = document.getElementById('sync-indicator');
+  if (!ind) return;
+  ind.className = 'sync-indicator ' + state;
+  ind.textContent = message;
+}
+
+async function fetchAppState() {
+  try {
+    updateSyncIndicator('syncing', '⏱️ Sync...');
+    const res = await fetch(JSONBIN_CONFIG.apiUrl + JSONBIN_CONFIG.binId + '/latest', {
+      headers: { 'X-Access-Key': JSONBIN_CONFIG.accessKey }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    appState = data.record || { members: [], interactions: {}, version: 1 };
+    if (!appState.members) appState.members = [];
+    if (!appState.interactions) appState.interactions = {};
+    updateSyncIndicator('synced', '✓ Synchronisé');
+    return true;
+  } catch (err) {
+    console.error('Fetch error:', err);
+    updateSyncIndicator('error', '⚠️ Erreur synchro');
+    return false;
+  }
+}
+
+async function saveAppState() {
+  if (syncInProgress) return false;
+  syncInProgress = true;
+  try {
+    updateSyncIndicator('syncing', '⏱️ Sauvegarde...');
+    appState.lastUpdated = new Date().toISOString();
+    const res = await fetch(JSONBIN_CONFIG.apiUrl + JSONBIN_CONFIG.binId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': JSONBIN_CONFIG.accessKey
+      },
+      body: JSON.stringify(appState)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    updateSyncIndicator('synced', '✓ Enregistré');
+    return true;
+  } catch (err) {
+    console.error('Save error:', err);
+    updateSyncIndicator('error', '⚠️ Erreur sauvegarde');
+    return false;
+  } finally {
+    syncInProgress = false;
+  }
+}
+
+async function initAuth() {
+  document.getElementById('auth-overlay').style.display = 'flex';
+  document.getElementById('auth-loading').style.display = 'block';
+  document.getElementById('auth-existing-members').style.display = 'none';
+  document.getElementById('auth-create-section').style.display = 'none';
+
+  const ok = await fetchAppState();
+  if (!ok) {
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('auth-error').textContent = '❌ Impossible de se connecter. Vérifie ta connexion internet.';
+    document.getElementById('auth-error').style.display = 'block';
+    return;
+  }
+
+  const savedUserId = localStorage.getItem('vacances-user-id');
+  if (savedUserId) {
+    const user = appState.members.find(m => m.id === savedUserId);
+    if (user) {
+      currentUser = user;
+      enterApp();
+      return;
+    }
+    localStorage.removeItem('vacances-user-id');
+  }
+
+  document.getElementById('auth-loading').style.display = 'none';
+  renderAuthMembers();
+  if (appState.members.length > 0) document.getElementById('auth-existing-members').style.display = 'flex';
+  document.getElementById('auth-create-section').style.display = 'block';
+}
+
+function renderAuthMembers() {
+  const el = document.getElementById('auth-existing-members');
+  if (appState.members.length === 0) { el.style.display = 'none'; return; }
+  el.innerHTML = appState.members.map(m => `
+    <button class="auth-member-btn" onclick="loginAs('${m.id}')">
+      <div class="auth-member-avatar" style="background:${m.color}">${getInitials(m.name)}</div>
+      <div>
+        <div class="auth-member-name">${escapeHtml(m.name)}</div>
+        <div class="auth-member-meta">Rejoint ${formatTimeAgo(m.createdAt)}</div>
+      </div>
+    </button>
+  `).join('');
+}
+
+function loginAs(memberId) {
+  const user = appState.members.find(m => m.id === memberId);
+  if (!user) return;
+  currentUser = user;
+  localStorage.setItem('vacances-user-id', user.id);
+  enterApp();
+}
+
+async function createMember() {
+  const name = document.getElementById('auth-name-input').value.trim();
+  if (!name || !selectedAuthColor) return;
+  const existing = appState.members.find(m => m.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    document.getElementById('auth-error').textContent = `⚠️ "${name}" existe déjà. Touche le bouton existant pour te reconnecter.`;
+    document.getElementById('auth-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('auth-error').style.display = 'none';
+  const newMember = { id: uuid(), name, color: selectedAuthColor, createdAt: new Date().toISOString() };
+  appState.members.push(newMember);
+  const saved = await saveAppState();
+  if (saved) {
+    currentUser = newMember;
+    localStorage.setItem('vacances-user-id', newMember.id);
+    enterApp();
+  } else {
+    appState.members.pop();
+    document.getElementById('auth-error').textContent = '❌ Impossible de créer ton profil. Réessaie.';
+    document.getElementById('auth-error').style.display = 'block';
+  }
+}
+
+function enterApp() {
+  document.getElementById('auth-overlay').style.display = 'none';
+  document.getElementById('user-bar').style.display = 'block';
+  const avatar = document.getElementById('user-avatar');
+  avatar.style.background = currentUser.color;
+  avatar.textContent = getInitials(currentUser.name);
+  document.getElementById('user-name').textContent = 'Salut ' + currentUser.name + ' 👋';
+  render();
+  startAutoRefresh();
+}
+
+function logout() {
+  if (!confirm('Changer de membre ? Tes données sont sauvegardées dans le cloud.')) return;
+  localStorage.removeItem('vacances-user-id');
+  currentUser = null;
+  document.getElementById('user-bar').style.display = 'none';
+  stopAutoRefresh();
+  initAuth();
+}
+
+function getCardInteractions(cardId) {
+  if (!appState.interactions[cardId]) {
+    appState.interactions[cardId] = { likes: [], comments: [], rankings: {} };
+  }
+  return appState.interactions[cardId];
+}
+
+function renderSocialZone(cardId) {
+  const inter = getCardInteractions(cardId);
+  const isLiked = (inter.likes || []).includes(currentUser.id);
+  const myRank = (inter.rankings || {})[currentUser.id];
+
+  const likesHtml = (inter.likes || []).length > 0
+    ? `<div class="likes-display">
+         <div class="likes-avatars">
+           ${inter.likes.slice(0, 6).map(uid => {
+             const m = getMember(uid);
+             return m ? `<div class="like-avatar" style="background:${m.color}" title="${escapeHtml(m.name)}">${getInitials(m.name)}</div>` : '';
+           }).join('')}
+         </div>
+         <span>${inter.likes.length} ${inter.likes.length > 1 ? 'aiment' : 'aime'}</span>
+       </div>` : '';
+
+  const rankEntries = Object.entries(inter.rankings || {}).filter(([uid]) => getMember(uid));
+  const rankingsHtml = rankEntries.length > 0
+    ? `<div class="rankings-display">
+         ${rankEntries.map(([uid, r]) => {
+           const m = getMember(uid);
+           const medal = r === 1 ? '🥇' : r === 2 ? '🥈' : '🥉';
+           return `<span class="ranking-chip" style="background:${m.color}22">${medal} ${escapeHtml(m.name)}</span>`;
+         }).join('')}
+       </div>` : '';
+
+  const commentsHtml = (inter.comments || []).length > 0
+    ? `<div class="comments-list">
+         ${inter.comments.map((c, idx) => {
+           const m = getMember(c.memberId);
+           if (!m) return '';
+           return `<div class="comment">
+             <div class="comment-head">
+               <div class="comment-avatar" style="background:${m.color}">${getInitials(m.name)}</div>
+               <div class="comment-author">${escapeHtml(m.name)}</div>
+               <div class="comment-time">${formatTimeAgo(c.createdAt)}</div>
+               ${c.memberId === currentUser.id ? `<button onclick="event.stopPropagation();deleteComment('${cardId}',${idx})" style="background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:16px;padding:0 4px;line-height:1" title="Supprimer">×</button>` : ''}
+             </div>
+             <div class="comment-text">${escapeHtml(c.text)}</div>
+           </div>`;
+         }).join('')}
+       </div>` : '';
+
+  return `
+    <div class="social-zone" onclick="event.stopPropagation()">
+      <div class="social-header">👨‍👩‍👧‍👦 Avis de la famille</div>
+      <div class="social-actions">
+        <button class="social-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${cardId}')">
+          ${isLiked ? '❤️' : '🤍'} ${isLiked ? 'Adoré' : 'J\'aime'}
+        </button>
+        <button class="social-btn ${myRank ? 'ranked' : ''}" onclick="event.stopPropagation();openRankModal('${cardId}')">
+          ${myRank ? (myRank === 1 ? '🥇' : myRank === 2 ? '🥈' : '🥉') + ' Top ' + myRank : '⭐ Classer'}
+        </button>
+      </div>
+      ${likesHtml}
+      ${rankingsHtml}
+      ${commentsHtml}
+      <div class="comment-form">
+        <input type="text" class="comment-input" id="comment-input-${cardId}" placeholder="Ton avis..." maxlength="280" />
+        <button class="comment-send" onclick="event.stopPropagation();sendComment('${cardId}')">Envoyer</button>
+      </div>
+    </div>
+  `;
+}
+
+async function toggleLike(cardId) {
+  const inter = getCardInteractions(cardId);
+  if (!inter.likes) inter.likes = [];
+  const idx = inter.likes.indexOf(currentUser.id);
+  if (idx >= 0) inter.likes.splice(idx, 1);
+  else inter.likes.push(currentUser.id);
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+function openRankModal(cardId) {
+  const inter = getCardInteractions(cardId);
+  const myRank = (inter.rankings || {})[currentUser.id];
+  const myUsedRanks = {};
+  Object.entries(appState.interactions).forEach(([cId, i]) => {
+    if (i.rankings && i.rankings[currentUser.id]) {
+      myUsedRanks[i.rankings[currentUser.id]] = cId;
+    }
+  });
+  const cardData = DATA.find(d => d.id === cardId);
+  const cardName = cardData ? cardData.title : '';
+  const existing = document.getElementById('rank-modal-active');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'rank-modal-active';
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal-box">
+      <h2>⭐ Mon classement</h2>
+      <p class="modal-desc">Place <strong>${escapeHtml(cardName)}</strong> dans ton top 3</p>
+      <div class="rank-options">
+        ${[1, 2, 3].map(r => {
+          const medal = r === 1 ? '🥇' : r === 2 ? '🥈' : '🥉';
+          const taken = myUsedRanks[r] && myUsedRanks[r] !== cardId;
+          const takenName = taken ? (DATA.find(d => d.id === myUsedRanks[r])?.title || '') : '';
+          return `<button class="rank-option ${myRank === r ? 'selected' : ''}" onclick="setRank('${cardId}', ${r})">
+            <span><span class="medal">${medal}</span>Top ${r}</span>
+            ${taken ? `<span class="rank-taken">⚠️ déjà:<br>${escapeHtml(takenName.substring(0, 22))}${takenName.length > 22 ? '…' : ''}</span>` : ''}
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="modal-actions">
+        ${myRank ? `<button class="btn-secondary" onclick="setRank('${cardId}', null)">Retirer du top</button>` : ''}
+        <button class="btn-primary" onclick="closeRankModal()">Fermer</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function closeRankModal() {
+  const m = document.getElementById('rank-modal-active');
+  if (m) m.remove();
+}
+
+async function setRank(cardId, rank) {
+  const inter = getCardInteractions(cardId);
+  if (!inter.rankings) inter.rankings = {};
+  if (rank === null) {
+    delete inter.rankings[currentUser.id];
+  } else {
+    Object.values(appState.interactions).forEach(i => {
+      if (i.rankings && i.rankings[currentUser.id] === rank) {
+        delete i.rankings[currentUser.id];
+      }
+    });
+    inter.rankings[currentUser.id] = rank;
+  }
+  closeRankModal();
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+async function sendComment(cardId) {
+  const input = document.getElementById('comment-input-' + cardId);
+  const text = input.value.trim();
+  if (!text) return;
+  const inter = getCardInteractions(cardId);
+  if (!inter.comments) inter.comments = [];
+  inter.comments.push({ memberId: currentUser.id, text, createdAt: new Date().toISOString() });
+  input.value = '';
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+async function deleteComment(cardId, idx) {
+  if (!confirm('Supprimer ce commentaire ?')) return;
+  const inter = getCardInteractions(cardId);
+  inter.comments.splice(idx, 1);
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+function rerenderKeepingOpen() {
+  const openIds = Array.from(document.querySelectorAll('.card.open')).map(c => c.dataset.id);
+  render();
+  openIds.forEach(id => {
+    const card = document.querySelector(`[data-id="${id}"]`);
+    if (card) card.classList.add('open');
+  });
+}
+
+function openTeamModal() {
+  const scores = {};
+  DATA.forEach(d => {
+    const inter = appState.interactions[d.id];
+    if (!inter) return;
+    let score = (inter.likes || []).length * 2;
+    Object.values(inter.rankings || {}).forEach(r => {
+      score += r === 1 ? 10 : r === 2 ? 7 : r === 3 ? 5 : 0;
+    });
+    if (score > 0) scores[d.id] = score;
+  });
+  const sorted = Object.entries(scores)
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, score]) => ({ id, score, data: DATA.find(d => d.id === id) }))
+    .filter(x => x.data);
+  const rankingsHtml = sorted.length === 0
+    ? '<div style="text-align:center;padding:20px;color:var(--ink-soft);font-size:13px">Personne n\'a encore noté. Soyez les premiers !</div>'
+    : sorted.map((x, idx) => {
+        const inter = appState.interactions[x.id];
+        const likesCount = (inter.likes || []).length;
+        const top1 = Object.values(inter.rankings || {}).filter(r => r === 1).length;
+        const top2 = Object.values(inter.rankings || {}).filter(r => r === 2).length;
+        const top3 = Object.values(inter.rankings || {}).filter(r => r === 3).length;
+        const cls = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+        const pos = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '#' + (idx + 1);
+        const parts = [];
+        if (likesCount) parts.push(`❤️ ${likesCount}`);
+        if (top1) parts.push(`🥇 ${top1}`);
+        if (top2) parts.push(`🥈 ${top2}`);
+        if (top3) parts.push(`🥉 ${top3}`);
+        return `<div class="team-rank-row ${cls}">
+          <div class="team-rank-pos">${pos}</div>
+          <div class="team-rank-info">
+            <div class="team-rank-name">${escapeHtml(x.data.title)}</div>
+            <div class="team-rank-detail">${parts.join(' · ')}</div>
+          </div>
+          <div class="team-rank-score">${x.score}</div>
+        </div>`;
+      }).join('');
+  document.getElementById('team-rankings').innerHTML = rankingsHtml;
+  const membersHtml = appState.members.map(m => {
+    let nLikes = 0, nRanks = 0, nComments = 0;
+    Object.values(appState.interactions).forEach(i => {
+      if (i.likes && i.likes.includes(m.id)) nLikes++;
+      if (i.rankings && i.rankings[m.id]) nRanks++;
+      if (i.comments) nComments += i.comments.filter(c => c.memberId === m.id).length;
+    });
+    return `<div class="team-member-row">
+      <div class="member-avatar-sm" style="background:${m.color}">${getInitials(m.name)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:13px">${escapeHtml(m.name)}${m.id === currentUser.id ? ' (toi)' : ''}</div>
+        <div style="font-size:11px;color:var(--ink-soft)">❤️ ${nLikes} · ⭐ ${nRanks} · 💬 ${nComments}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('team-members-list').innerHTML = membersHtml;
+  document.getElementById('team-modal').style.display = 'flex';
+}
+
+function closeTeamModal() {
+  document.getElementById('team-modal').style.display = 'none';
+}
+
+let refreshInterval = null;
+function startAutoRefresh() {
+  if (refreshInterval) clearInterval(refreshInterval);
+  refreshInterval = setInterval(async () => {
+    if (syncInProgress) return;
+    const prevState = JSON.stringify(appState.interactions);
+    await fetchAppState();
+    if (JSON.stringify(appState.interactions) !== prevState) {
+      rerenderKeepingOpen();
+    }
+  }, 20000);
+}
+function stopAutoRefresh() {
+  if (refreshInterval) clearInterval(refreshInterval);
+  refreshInterval = null;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.auth-color').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.auth-color').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedAuthColor = btn.dataset.color;
+      checkAuthFormValid();
+    });
+  });
+  const nameInput = document.getElementById('auth-name-input');
+  if (nameInput) {
+    nameInput.addEventListener('input', checkAuthFormValid);
+    nameInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !document.getElementById('auth-create-btn').disabled) createMember();
+    });
+  }
+  const createBtn = document.getElementById('auth-create-btn');
+  if (createBtn) createBtn.addEventListener('click', createMember);
+  const teamBtn = document.getElementById('btn-team');
+  if (teamBtn) teamBtn.addEventListener('click', openTeamModal);
+  const logoutBtn = document.getElementById('btn-logout');
+  if (logoutBtn) logoutBtn.addEventListener('click', logout);
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && currentUser) {
+      fetchAppState().then(() => rerenderKeepingOpen());
+    }
+  });
+
+  // Empêcher fermeture carte au clic sur input/bouton commentaire
+  document.addEventListener('click', e => {
+    if (e.target.closest('.social-zone')) e.stopPropagation();
+  }, true);
+});
+
+function checkAuthFormValid() {
+  const name = document.getElementById('auth-name-input').value.trim();
+  document.getElementById('auth-create-btn').disabled = !(name.length >= 2 && selectedAuthColor);
+}
+
 render();
+initAuth();
 </script>
 </body>
 </html>
