@@ -149,6 +149,31 @@
   }
   .card-header:active { background: var(--sand); }
 
+  .card-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #2a6f7a, #1d4f57);
+    color: white !important;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: transform 0.15s;
+    box-shadow: 0 2px 8px rgba(42,111,122,0.25);
+  }
+  .card-phone:active {
+    transform: scale(0.96);
+  }
+  .badge.pension-badge {
+    background: linear-gradient(135deg, #5a8a4a, #4a7338) !important;
+    color: white !important;
+    font-weight: 600;
+    border: none !important;
+  }
+
   .card-num {
     font-family: 'Fraunces', serif;
     font-weight: 700;
@@ -854,6 +879,16 @@
     border-color: var(--rose);
     color: var(--rose);
   }
+  .social-btn.disliked {
+    background: #e8e8ec;
+    border-color: var(--ink-soft);
+    color: var(--ink);
+  }
+  .social-btn.overbudget {
+    background: #fef3d4;
+    border-color: var(--coral);
+    color: var(--coral);
+  }
   .social-btn.ranked {
     background: #fef3d4;
     border-color: var(--gold);
@@ -1099,7 +1134,7 @@
   <div class="modal-box">
     <button class="modal-close" onclick="closeTeamModal()">✕</button>
     <h2>🏆 Classement Famille</h2>
-    <p class="modal-desc">Score = ❤️ × 2 + ⭐ classement perso (10 pts top 1, 7 pts top 2, 5 pts top 3)</p>
+    <p class="modal-desc">Score = ❤️ × 2 − 👎 × 2 − 🚫 × 1 + ⭐ classement perso (top 1 = +10, top 2 = +7, top 3 = +5)</p>
     <div id="team-rankings"></div>
     <h3>👥 Membres</h3>
     <div id="team-members-list"></div>
@@ -1112,7 +1147,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — 🎉 Mode collaboratif famille activé !</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — 📞 Téléphones cliquables + 🍽️ Badges pension visibles dès l'accueil</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -1137,6 +1172,7 @@ const DATA = [
     title: 'Village Corsaire / 2 Plages & Océan',
     stars: '★★★★',
     place: 'Châtelaillon-Plage (côté Babord)',
+    phone: '0546562753',
     tags: ['Mobil-home', '2 ch.', 'Plage 300 m'],
     status: 'devis',
     dispoConfirmed: '2 devis reçus le 22/05 — Corsaire sans clim (3 668 €) OU Pirate AVEC climatisation (3 995 €). Les deux dans le budget !',
@@ -1206,6 +1242,7 @@ const DATA = [
     title: 'Camping Au Port-Punay',
     stars: '★★★★',
     place: 'Châtelaillon — Les Boucholeurs',
+    phone: '0517810000',
     tags: ['Mobil-home', 'IRM 2020', 'Spa'],
     status: 'attente',
     dispoConfirmed: 'Réponse d\'Angelique Moreau du 22/05 — disponibilités confirmées. Les tarifs détaillés sont consultables directement sur le site du camping.',
@@ -1258,6 +1295,7 @@ const DATA = [
     title: 'Résidence Odalys L\'Archipel',
     stars: '★★★★',
     place: 'La Rochelle centre',
+    phone: '0411932222',
     tags: ['2 pièces 6 pers.', 'Climatisé', 'Devis reçu'],
     status: 'devis',
     dispoConfirmed: 'Devis reçu le 26/05 (réf. 4320917/2605/RLL/IPMS) — 2 pièces coin nuit 6 pers. ⚠️ Hors budget (5 119,98 € TTC) et config à clarifier.',
@@ -1312,6 +1350,8 @@ const DATA = [
     title: 'Ré la Blanche — Vacances Passion',
     stars: '★★★',
     place: 'Le Bois-Plage-en-Ré (Île de Ré)',
+    phone: '0546097272',
+    pension: 'Pension complète & demi-pension',
     tags: ['Village vacances', 'Pension'],
     status: 'attente',
     price: 'À confirmer',
@@ -1350,6 +1390,7 @@ const DATA = [
     title: 'Village Océanique',
     stars: '★★★',
     place: 'Le Bois-Plage-en-Ré (Île de Ré)',
+    phone: '0546092322',
     tags: ['Mobil-home', '3 ch.'],
     status: 'complet',
     completReason: 'Tous les hébergements complets en août 2026 (confirmation reçue du Service Réception le 22/05).',
@@ -1389,6 +1430,7 @@ const DATA = [
     title: 'VVF Île de Ré Les Dunes',
     stars: '★★★',
     place: 'Sainte-Marie-de-Ré (Île de Ré)',
+    phone: '0546302622',
     tags: ['Appart 4 pièces', 'Face mer', '8 pers.'],
     status: 'devis',
     dispoConfirmed: 'Devis reçu de Justine le 25/05 — Dispo uniquement du 09/08 au 30/08 (logement 4 pièces 8 personnes, seule typologie restante).',
@@ -1447,6 +1489,8 @@ const DATA = [
     title: 'Sandaya Les Grenettes',
     stars: '★★★★★',
     place: 'Sainte-Marie-de-Ré (Île de Ré)',
+    phone: '0535000131',
+    pension: 'Demi-pension & pension dispo',
     tags: ['Camping 5★', '+ Hôtel 4★', 'Sandaya'],
     status: 'attente',
     price: '~ 3 500–5 200 €',
@@ -1488,6 +1532,7 @@ const DATA = [
     title: 'Sandaya Interlude',
     stars: '★★★★★',
     place: 'Le Bois-Plage-en-Ré (Île de Ré)',
+    phone: '0546091822',
     tags: ['Camping 5★', 'Plage 50 m', 'Spa'],
     status: 'attente',
     price: '~ 4 000–5 800 €',
@@ -1528,6 +1573,7 @@ const DATA = [
     title: 'Odalys Le Domaine de l\'Océan',
     stars: '★★★',
     place: 'Saint-Brevin-les-Pins (44)',
+    phone: '0240277526',
     tags: ['Maisonnette', '2 ch.', 'Hors La Rochelle'],
     status: 'attente',
     price: '~ 2 500–3 600 €',
@@ -1570,11 +1616,12 @@ const DATA = [
     title: 'Pierre & Vacances La Baie des Sables',
     stars: '★★★',
     place: 'Les Sables d\'Olonne (85 — Vendée)',
+    phone: '0251213165',
     tags: ['Appart T3', '100 m plage', 'Train direct'],
     status: 'attente',
     price: '~ 2 500–3 800 €',
     priceConfirmed: '',
-    contact: 'info@pierreetvacances.com · 01 73 27 55 90',
+    contact: 'reception.sables-dolonne@groupepvcp.com · 02 51 21 31 65',
     chambres: 'T3 60 m² 6 pers. demandé',
     climatisation: 'Probablement non',
     gareDist: '5-12 min à pied (840 m)',
@@ -1613,6 +1660,7 @@ const DATA = [
     title: 'Odalys L\'Orée du Parc',
     stars: '★★★',
     place: 'Royan (17 — Charente-Maritime)',
+    phone: '0411932222',
     tags: ['Appart 3 pièces', '150 m plage', 'Fidélité Odalys'],
     status: 'attente',
     price: '~ 2 700–3 800 €',
@@ -1655,6 +1703,8 @@ const DATA = [
     title: 'Village Club du Soleil — Ronce-les-Bains',
     stars: '★★★',
     place: 'Ronce-les-Bains / La Tremblade (17)',
+    phone: '0491048704',
+    pension: 'Pension complète & demi-pension',
     tags: ['Village club', 'Pension complète', '☎️ Centrale tél.'],
     status: 'relance',
     price: '~ 3 800–5 500 €',
@@ -1794,6 +1844,13 @@ function renderCard(d, dim) {
     </div>
   ` : '';
 
+  const formatPhone = p => p ? p.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : '';
+  const phoneHtml = d.phone ? `
+    <a href="tel:+33${d.phone.substring(1)}" class="card-phone" onclick="event.stopPropagation()">
+      📞 ${formatPhone(d.phone)}
+    </a>` : '';
+  const pensionBadge = d.pension ? `<span class="badge pension-badge">🍽️ ${d.pension}</span>` : '';
+
   return `
     <div class="card ${dim ? 'dim' : ''}" data-id="${d.id}">
       <div class="card-header" onclick="toggle('${d.id}')">
@@ -1801,7 +1858,8 @@ function renderCard(d, dim) {
         <div class="card-title-wrap">
           <div class="card-title">${d.title} <span style="color:var(--gold);font-size:13px">${d.stars}</span></div>
           <div class="card-place">${d.place}</div>
-          <div class="badges">${statusBadge}${tags}</div>
+          <div class="badges">${statusBadge}${pensionBadge}${tags}</div>
+          ${phoneHtml}
         </div>
         <div class="chevron">▾</div>
       </div>
@@ -2093,14 +2151,20 @@ function logout() {
 
 function getCardInteractions(cardId) {
   if (!appState.interactions[cardId]) {
-    appState.interactions[cardId] = { likes: [], comments: [], rankings: {} };
+    appState.interactions[cardId] = { likes: [], dislikes: [], overbudget: [], comments: [], rankings: {} };
   }
-  return appState.interactions[cardId];
+  // Migration : ajouter les nouveaux tableaux si l'interaction existe sans
+  const i = appState.interactions[cardId];
+  if (!i.dislikes) i.dislikes = [];
+  if (!i.overbudget) i.overbudget = [];
+  return i;
 }
 
 function renderSocialZone(cardId) {
   const inter = getCardInteractions(cardId);
   const isLiked = (inter.likes || []).includes(currentUser.id);
+  const isDisliked = (inter.dislikes || []).includes(currentUser.id);
+  const isOverBudget = (inter.overbudget || []).includes(currentUser.id);
   const myRank = (inter.rankings || {})[currentUser.id];
 
   const likesHtml = (inter.likes || []).length > 0
@@ -2111,7 +2175,29 @@ function renderSocialZone(cardId) {
              return m ? `<div class="like-avatar" style="background:${m.color}" title="${escapeHtml(m.name)}">${getInitials(m.name)}</div>` : '';
            }).join('')}
          </div>
-         <span>${inter.likes.length} ${inter.likes.length > 1 ? 'aiment' : 'aime'}</span>
+         <span>❤️ ${inter.likes.length} ${inter.likes.length > 1 ? 'aiment' : 'aime'}</span>
+       </div>` : '';
+
+  const dislikesHtml = (inter.dislikes || []).length > 0
+    ? `<div class="likes-display">
+         <div class="likes-avatars">
+           ${inter.dislikes.slice(0, 6).map(uid => {
+             const m = getMember(uid);
+             return m ? `<div class="like-avatar" style="background:${m.color}" title="${escapeHtml(m.name)}">${getInitials(m.name)}</div>` : '';
+           }).join('')}
+         </div>
+         <span>👎 ${inter.dislikes.length} ${inter.dislikes.length > 1 ? 'n\'aiment pas' : 'n\'aime pas'}</span>
+       </div>` : '';
+
+  const overbudgetHtml = (inter.overbudget || []).length > 0
+    ? `<div class="likes-display">
+         <div class="likes-avatars">
+           ${inter.overbudget.slice(0, 6).map(uid => {
+             const m = getMember(uid);
+             return m ? `<div class="like-avatar" style="background:${m.color}" title="${escapeHtml(m.name)}">${getInitials(m.name)}</div>` : '';
+           }).join('')}
+         </div>
+         <span>🚫 Hors budget pour ${inter.overbudget.length}</span>
        </div>` : '';
 
   const rankEntries = Object.entries(inter.rankings || {}).filter(([uid]) => getMember(uid));
@@ -2148,11 +2234,19 @@ function renderSocialZone(cardId) {
         <button class="social-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation();toggleLike('${cardId}')">
           ${isLiked ? '❤️' : '🤍'} ${isLiked ? 'Adoré' : 'J\'aime'}
         </button>
+        <button class="social-btn ${isDisliked ? 'disliked' : ''}" onclick="event.stopPropagation();toggleDislike('${cardId}')">
+          ${isDisliked ? '👎' : '👎🏻'} ${isDisliked ? 'Pas aimé' : 'J\'aime pas'}
+        </button>
+        <button class="social-btn ${isOverBudget ? 'overbudget' : ''}" onclick="event.stopPropagation();toggleOverBudget('${cardId}')">
+          🚫 ${isOverBudget ? 'Hors budget' : 'Trop cher'}
+        </button>
         <button class="social-btn ${myRank ? 'ranked' : ''}" onclick="event.stopPropagation();openRankModal('${cardId}')">
           ${myRank ? (myRank === 1 ? '🥇' : myRank === 2 ? '🥈' : '🥉') + ' Top ' + myRank : '⭐ Classer'}
         </button>
       </div>
       ${likesHtml}
+      ${dislikesHtml}
+      ${overbudgetHtml}
       ${rankingsHtml}
       ${commentsHtml}
       <div class="comment-form">
@@ -2166,9 +2260,43 @@ function renderSocialZone(cardId) {
 async function toggleLike(cardId) {
   const inter = getCardInteractions(cardId);
   if (!inter.likes) inter.likes = [];
+  if (!inter.dislikes) inter.dislikes = [];
   const idx = inter.likes.indexOf(currentUser.id);
-  if (idx >= 0) inter.likes.splice(idx, 1);
-  else inter.likes.push(currentUser.id);
+  if (idx >= 0) {
+    inter.likes.splice(idx, 1);
+  } else {
+    inter.likes.push(currentUser.id);
+    // Si on like, on enlève le dislike éventuel
+    const dIdx = inter.dislikes.indexOf(currentUser.id);
+    if (dIdx >= 0) inter.dislikes.splice(dIdx, 1);
+  }
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+async function toggleDislike(cardId) {
+  const inter = getCardInteractions(cardId);
+  if (!inter.likes) inter.likes = [];
+  if (!inter.dislikes) inter.dislikes = [];
+  const idx = inter.dislikes.indexOf(currentUser.id);
+  if (idx >= 0) {
+    inter.dislikes.splice(idx, 1);
+  } else {
+    inter.dislikes.push(currentUser.id);
+    // Si on dislike, on enlève le like éventuel
+    const lIdx = inter.likes.indexOf(currentUser.id);
+    if (lIdx >= 0) inter.likes.splice(lIdx, 1);
+  }
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+async function toggleOverBudget(cardId) {
+  const inter = getCardInteractions(cardId);
+  if (!inter.overbudget) inter.overbudget = [];
+  const idx = inter.overbudget.indexOf(currentUser.id);
+  if (idx >= 0) inter.overbudget.splice(idx, 1);
+  else inter.overbudget.push(currentUser.id);
   rerenderKeepingOpen();
   await saveAppState();
 }
@@ -2271,10 +2399,15 @@ function openTeamModal() {
     const inter = appState.interactions[d.id];
     if (!inter) return;
     let score = (inter.likes || []).length * 2;
+    score -= (inter.dislikes || []).length * 2; // malus pour dislikes
+    score -= (inter.overbudget || []).length * 1; // léger malus pour hors budget
     Object.values(inter.rankings || {}).forEach(r => {
       score += r === 1 ? 10 : r === 2 ? 7 : r === 3 ? 5 : 0;
     });
-    if (score > 0) scores[d.id] = score;
+    // On garde toutes les options où il y a eu une activité
+    const hasActivity = (inter.likes || []).length > 0 || (inter.dislikes || []).length > 0 ||
+                        (inter.overbudget || []).length > 0 || Object.keys(inter.rankings || {}).length > 0;
+    if (hasActivity) scores[d.id] = score;
   });
   const sorted = Object.entries(scores)
     .sort((a, b) => b[1] - a[1])
@@ -2285,30 +2418,37 @@ function openTeamModal() {
     : sorted.map((x, idx) => {
         const inter = appState.interactions[x.id];
         const likesCount = (inter.likes || []).length;
+        const dislikesCount = (inter.dislikes || []).length;
+        const overbudgetCount = (inter.overbudget || []).length;
         const top1 = Object.values(inter.rankings || {}).filter(r => r === 1).length;
         const top2 = Object.values(inter.rankings || {}).filter(r => r === 2).length;
         const top3 = Object.values(inter.rankings || {}).filter(r => r === 3).length;
-        const cls = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
-        const pos = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '#' + (idx + 1);
+        const cls = x.score > 0 && idx === 0 ? 'gold' : x.score > 0 && idx === 1 ? 'silver' : x.score > 0 && idx === 2 ? 'bronze' : '';
+        const pos = x.score > 0 && idx === 0 ? '🥇' : x.score > 0 && idx === 1 ? '🥈' : x.score > 0 && idx === 2 ? '🥉' : '#' + (idx + 1);
         const parts = [];
         if (likesCount) parts.push(`❤️ ${likesCount}`);
+        if (dislikesCount) parts.push(`👎 ${dislikesCount}`);
+        if (overbudgetCount) parts.push(`🚫 ${overbudgetCount}`);
         if (top1) parts.push(`🥇 ${top1}`);
         if (top2) parts.push(`🥈 ${top2}`);
         if (top3) parts.push(`🥉 ${top3}`);
+        const scoreClass = x.score < 0 ? 'style="color:var(--rose)"' : '';
         return `<div class="team-rank-row ${cls}">
           <div class="team-rank-pos">${pos}</div>
           <div class="team-rank-info">
             <div class="team-rank-name">${escapeHtml(x.data.title)}</div>
             <div class="team-rank-detail">${parts.join(' · ')}</div>
           </div>
-          <div class="team-rank-score">${x.score}</div>
+          <div class="team-rank-score" ${scoreClass}>${x.score > 0 ? '+' : ''}${x.score}</div>
         </div>`;
       }).join('');
   document.getElementById('team-rankings').innerHTML = rankingsHtml;
   const membersHtml = appState.members.map(m => {
-    let nLikes = 0, nRanks = 0, nComments = 0;
+    let nLikes = 0, nDislikes = 0, nOverBudget = 0, nRanks = 0, nComments = 0;
     Object.values(appState.interactions).forEach(i => {
       if (i.likes && i.likes.includes(m.id)) nLikes++;
+      if (i.dislikes && i.dislikes.includes(m.id)) nDislikes++;
+      if (i.overbudget && i.overbudget.includes(m.id)) nOverBudget++;
       if (i.rankings && i.rankings[m.id]) nRanks++;
       if (i.comments) nComments += i.comments.filter(c => c.memberId === m.id).length;
     });
@@ -2316,7 +2456,7 @@ function openTeamModal() {
       <div class="member-avatar-sm" style="background:${m.color}">${getInitials(m.name)}</div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:13px">${escapeHtml(m.name)}${m.id === currentUser.id ? ' (toi)' : ''}</div>
-        <div style="font-size:11px;color:var(--ink-soft)">❤️ ${nLikes} · ⭐ ${nRanks} · 💬 ${nComments}</div>
+        <div style="font-size:11px;color:var(--ink-soft)">❤️ ${nLikes} · 👎 ${nDislikes} · 🚫 ${nOverBudget} · ⭐ ${nRanks} · 💬 ${nComments}</div>
       </div>
     </div>`;
   }).join('');
