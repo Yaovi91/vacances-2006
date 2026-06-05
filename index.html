@@ -1202,6 +1202,70 @@
     color: white; font-weight: 700; font-size: 12px;
   }
 
+  /* ============ TOP 3 PERSONNEL ============ */
+  .personal-rank-block {
+    background: var(--sand);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .personal-rank-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .personal-rank-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+    flex: 1;
+  }
+  .personal-rank-empty-badge {
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .personal-rank-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .personal-rank-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink);
+    padding: 4px 0;
+  }
+  .personal-rank-line.empty {
+    color: var(--ink-soft);
+    font-style: italic;
+    opacity: 0.6;
+  }
+  .personal-medal {
+    font-size: 16px;
+    min-width: 22px;
+  }
+  .personal-card-num {
+    font-weight: 800;
+    color: var(--coral);
+    min-width: 22px;
+  }
+  .personal-card-title {
+    flex: 1;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .personal-empty {
+    flex: 1;
+    font-size: 11px;
+  }
+
   /* ============ MAP SECTION ============ */
   .map-section {
     margin: 14px 0;
@@ -1354,6 +1418,8 @@
     <h2>🏆 Classement Famille</h2>
     <p class="modal-desc">Score = ❤️ × 2 − 👎 × 2 − 🚫 × 1 + ⭐ classement perso (top 1 = +10, top 2 = +7, top 3 = +5)</p>
     <div id="team-rankings"></div>
+    <h3>🎯 Top 3 personnel de chacun</h3>
+    <div id="team-personal-rankings"></div>
     <h3>👥 Membres</h3>
     <div id="team-members-list"></div>
   </div>
@@ -1365,7 +1431,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — 💶 Devis collaboratifs + bug saisie corrigé</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — 🎯 Top 3 personnel visible dans le classement famille</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -2824,6 +2890,48 @@ function openTeamModal() {
         </div>`;
       }).join('');
   document.getElementById('team-rankings').innerHTML = rankingsHtml;
+  
+  // ============ TOP 3 PERSONNEL DE CHAQUE MEMBRE ============
+  const personalHtml = appState.members.length === 0
+    ? '<div style="text-align:center;padding:14px;color:var(--ink-soft);font-size:13px">Aucun membre n\'est encore inscrit.</div>'
+    : appState.members.map(m => {
+        // Récupérer le top 1/2/3 de ce membre
+        const myRanks = { 1: null, 2: null, 3: null };
+        Object.entries(appState.interactions).forEach(([cardId, inter]) => {
+          if (inter.rankings && inter.rankings[m.id]) {
+            const rank = inter.rankings[m.id];
+            const card = DATA.find(d => d.id === cardId);
+            if (card && [1, 2, 3].includes(rank)) {
+              myRanks[rank] = card;
+            }
+          }
+        });
+        const hasAny = myRanks[1] || myRanks[2] || myRanks[3];
+        
+        const rankLineHtml = (rank) => {
+          const card = myRanks[rank];
+          const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉';
+          if (!card) {
+            return `<div class="personal-rank-line empty"><span class="personal-medal">${medal}</span><span class="personal-empty">— pas encore choisi —</span></div>`;
+          }
+          return `<div class="personal-rank-line"><span class="personal-medal">${medal}</span><span class="personal-card-num">${card.num}</span><span class="personal-card-title">${escapeHtml(card.title)}</span></div>`;
+        };
+        
+        return `<div class="personal-rank-block">
+          <div class="personal-rank-head">
+            <div class="member-avatar-sm" style="background:${m.color}">${getInitials(m.name)}</div>
+            <div class="personal-rank-name">${escapeHtml(m.name)}${m.id === currentUser.id ? ' (toi)' : ''}</div>
+            ${!hasAny ? '<div class="personal-rank-empty-badge">Aucun classement</div>' : ''}
+          </div>
+          <div class="personal-rank-lines">
+            ${rankLineHtml(1)}
+            ${rankLineHtml(2)}
+            ${rankLineHtml(3)}
+          </div>
+        </div>`;
+      }).join('');
+  document.getElementById('team-personal-rankings').innerHTML = personalHtml;
+  
   const membersHtml = appState.members.map(m => {
     let nLikes = 0, nDislikes = 0, nOverBudget = 0, nRanks = 0, nComments = 0;
     Object.values(appState.interactions).forEach(i => {
