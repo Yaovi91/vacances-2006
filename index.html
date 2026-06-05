@@ -160,7 +160,6 @@
     border-radius: 12px;
     font-size: 14px;
     font-weight: 700;
-    margin-top: 10px;
     transition: transform 0.15s;
     box-shadow: 0 2px 8px rgba(42,111,122,0.25);
   }
@@ -172,6 +171,48 @@
     color: white !important;
     font-weight: 600;
     border: none !important;
+  }
+  
+  /* Ligne contact (prix + téléphone) */
+  .card-contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: stretch;
+  }
+  
+  /* Badge prix (devis reçu) */
+  .price-badge {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    cursor: default;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .price-badge-label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    opacity: 0.85;
+    text-transform: uppercase;
+  }
+  .price-badge-amount {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .price-badge-ok {
+    background: linear-gradient(135deg, #5a8a4a, #4a7338);
+    color: white;
+  }
+  .price-badge-over {
+    background: linear-gradient(135deg, #c25862, #a44853);
+    color: white;
   }
 
   .card-num {
@@ -1441,7 +1482,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — ⭐ Classement passé en Top 5 (5 places au lieu de 3)</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — 💶 Prix devis visibles dès l'accueil (vert/rouge selon budget)</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -2182,6 +2223,41 @@ function renderCard(d, dim) {
     </a>` : '';
   const pensionBadge = d.pension ? `<span class="badge pension-badge">🍽️ ${d.pension}</span>` : '';
 
+  // ============ BADGE PRIX (devis confirmé ou collaboratif) ============
+  let priceBadgeHtml = '';
+  const inter = appState && appState.interactions ? appState.interactions[d.id] : null;
+  const collabQuotes = (inter && inter.quotes) || [];
+  
+  // Prix officiel reçu (priceConfirmed dans DATA)
+  const officialPrice = (d.priceConfirmed || '').trim();
+  
+  // Prix collaboratifs (saisis dans l'app)
+  const collabAmounts = collabQuotes.map(q => q.amount).filter(a => a > 0);
+  const minCollab = collabAmounts.length > 0 ? Math.min(...collabAmounts) : null;
+  const maxCollab = collabAmounts.length > 0 ? Math.max(...collabAmounts) : null;
+  
+  if (officialPrice) {
+    // Cas 1 : prix officiel disponible
+    const isOverBudget = d.status === 'horsbudget' || /hors budget/i.test(officialPrice);
+    const priceClass = isOverBudget ? 'price-badge-over' : 'price-badge-ok';
+    priceBadgeHtml = `<div class="price-badge ${priceClass}" onclick="event.stopPropagation()">
+      <div class="price-badge-label">💶 ${isOverBudget ? 'Hors budget' : 'Devis reçu'}</div>
+      <div class="price-badge-amount">${officialPrice}</div>
+    </div>`;
+  } else if (minCollab !== null) {
+    // Cas 2 : pas de prix officiel, mais devis saisis dans l'app
+    const formatAmount = a => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(a);
+    const isOverBudget = d.status === 'horsbudget' || minCollab > 4000;
+    const priceClass = isOverBudget ? 'price-badge-over' : 'price-badge-ok';
+    const amountDisplay = (minCollab === maxCollab)
+      ? formatAmount(minCollab)
+      : `${formatAmount(minCollab)} – ${formatAmount(maxCollab)}`;
+    priceBadgeHtml = `<div class="price-badge ${priceClass}" onclick="event.stopPropagation()">
+      <div class="price-badge-label">💶 ${collabQuotes.length} devis collecté${collabQuotes.length > 1 ? 's' : ''}</div>
+      <div class="price-badge-amount">${amountDisplay}</div>
+    </div>`;
+  }
+
   return `
     <div class="card ${dim ? 'dim' : ''}" data-id="${d.id}">
       <div class="card-header" onclick="toggle('${d.id}')">
@@ -2190,7 +2266,10 @@ function renderCard(d, dim) {
           <div class="card-title">${d.title} <span style="color:var(--gold);font-size:13px">${d.stars}</span></div>
           <div class="card-place">${d.place}</div>
           <div class="badges">${statusBadge}${pensionBadge}${tags}</div>
-          ${phoneHtml}
+          <div class="card-contact-row">
+            ${priceBadgeHtml}
+            ${phoneHtml}
+          </div>
         </div>
         <div class="chevron">▾</div>
       </div>
