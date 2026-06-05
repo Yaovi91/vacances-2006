@@ -564,6 +564,17 @@
     font-size: 11px;
     color: var(--ink-soft);
   }
+  .transport-smo-price {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--sea-deep);
+    margin-bottom: 6px;
+  }
+  .transport-smo-pricenote {
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
   .transport-smo-steps {
     background: white;
     padding: 8px 12px;
@@ -1073,6 +1084,95 @@
     color: white; font-weight: 700; font-size: 12px;
   }
 
+  /* ============ MAP SECTION ============ */
+  .map-section {
+    margin: 14px 0;
+    background: var(--sand);
+    border-radius: 14px;
+    padding: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .map-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+  .map-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--ink) !important;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .map-btn:active { transform: scale(0.95); }
+  .map-btn:hover {
+    background: var(--sand-2);
+    border-color: var(--sea);
+  }
+  .map-btn-primary {
+    background: var(--sea) !important;
+    color: white !important;
+    border-color: var(--sea) !important;
+  }
+  .map-btn-primary:hover {
+    background: var(--sea-deep) !important;
+    border-color: var(--sea-deep) !important;
+  }
+  .map-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #e9e6dd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .map-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .map-coords {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .map-coords a {
+    color: var(--sea) !important;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .map-coords a:hover { text-decoration: underline; }
+  @media (min-width: 600px) {
+    .map-container { height: 350px; }
+  }
 </style>
 </head>
 <body>
@@ -1147,7 +1247,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — 📞 Téléphones cliquables + 🍽️ Badges pension visibles dès l'accueil</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — 🗺️ Cartes de localisation + ❌ Village Club Soleil hors budget (~9000€)</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -1173,6 +1273,8 @@ const DATA = [
     stars: '★★★★',
     place: 'Châtelaillon-Plage (côté Babord)',
     phone: '0546562753',
+    lat: 46.0758,
+    lng: -1.0808,
     tags: ['Mobil-home', '2 ch.', 'Plage 300 m'],
     status: 'devis',
     dispoConfirmed: '2 devis reçus le 22/05 — Corsaire sans clim (3 668 €) OU Pirate AVEC climatisation (3 995 €). Les deux dans le budget !',
@@ -1189,6 +1291,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~4h-4h30',
+      price: '~ 50–95 € (TER + TGV)',
       steps: '🚆 TER Châtelaillon → La Rochelle (7 min)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro M4 + M14 ou M6 vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     quotes: [
@@ -1243,6 +1346,8 @@ const DATA = [
     stars: '★★★★',
     place: 'Châtelaillon — Les Boucholeurs',
     phone: '0517810000',
+    lat: 46.0535,
+    lng: -1.0635,
     tags: ['Mobil-home', 'IRM 2020', 'Spa'],
     status: 'attente',
     dispoConfirmed: 'Réponse d\'Angelique Moreau du 22/05 — disponibilités confirmées. Les tarifs détaillés sont consultables directement sur le site du camping.',
@@ -1263,6 +1368,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~4h30-5h',
+      price: '~ 50–95 € (TER + TGV)',
       steps: '🚗/🚲 Camping → Gare Châtelaillon (1,5 km)<br>🚆 TER Châtelaillon → La Rochelle (7 min)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     pros: [
@@ -1296,6 +1402,8 @@ const DATA = [
     stars: '★★★★',
     place: 'La Rochelle centre',
     phone: '0411932222',
+    lat: 46.1591,
+    lng: -1.1532,
     tags: ['2 pièces 6 pers.', 'Climatisé', 'Devis reçu'],
     status: 'devis',
     dispoConfirmed: 'Devis reçu le 26/05 (réf. 4320917/2605/RLL/IPMS) — 2 pièces coin nuit 6 pers. ⚠️ Hors budget (5 119,98 € TTC) et config à clarifier.',
@@ -1312,6 +1420,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~4h-4h30',
+      price: '~ 45–90 € (TGV direct)',
       steps: '🚶 Résidence → Gare La Rochelle (15-20 min à pied)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     pros: [
@@ -1351,6 +1460,8 @@ const DATA = [
     stars: '★★★',
     place: 'Le Bois-Plage-en-Ré (Île de Ré)',
     phone: '0546097272',
+    lat: 46.1781,
+    lng: -1.3892,
     pension: 'Pension complète & demi-pension',
     tags: ['Village vacances', 'Pension'],
     status: 'attente',
@@ -1367,6 +1478,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~6h-7h',
+      price: '~ 50–95 € (bus + TGV depuis La Rochelle)',
       steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
     },
     pros: [
@@ -1391,6 +1503,8 @@ const DATA = [
     stars: '★★★',
     place: 'Le Bois-Plage-en-Ré (Île de Ré)',
     phone: '0546092322',
+    lat: 46.1755,
+    lng: -1.3845,
     tags: ['Mobil-home', '3 ch.'],
     status: 'complet',
     completReason: 'Tous les hébergements complets en août 2026 (confirmation reçue du Service Réception le 22/05).',
@@ -1407,6 +1521,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~6h-7h',
+      price: '~ 50–95 € (bus + TGV depuis La Rochelle)',
       steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
     },
     pros: [
@@ -1431,6 +1546,8 @@ const DATA = [
     stars: '★★★',
     place: 'Sainte-Marie-de-Ré (Île de Ré)',
     phone: '0546302622',
+    lat: 46.1583,
+    lng: -1.3525,
     tags: ['Appart 4 pièces', 'Face mer', '8 pers.'],
     status: 'devis',
     dispoConfirmed: 'Devis reçu de Justine le 25/05 — Dispo uniquement du 09/08 au 30/08 (logement 4 pièces 8 personnes, seule typologie restante).',
@@ -1447,6 +1564,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~6h-7h',
+      price: '~ 50–95 € (bus + TGV depuis La Rochelle)',
       steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
     },
     quotes: [
@@ -1490,6 +1608,8 @@ const DATA = [
     stars: '★★★★★',
     place: 'Sainte-Marie-de-Ré (Île de Ré)',
     phone: '0535000131',
+    lat: 46.1463,
+    lng: -1.3217,
     pension: 'Demi-pension & pension dispo',
     tags: ['Camping 5★', '+ Hôtel 4★', 'Sandaya'],
     status: 'attente',
@@ -1506,6 +1626,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~6h-7h',
+      price: '~ 50–95 € (bus + TGV depuis La Rochelle)',
       steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
     },
     pros: [
@@ -1533,6 +1654,8 @@ const DATA = [
     stars: '★★★★★',
     place: 'Le Bois-Plage-en-Ré (Île de Ré)',
     phone: '0546091822',
+    lat: 46.1828,
+    lng: -1.3795,
     tags: ['Camping 5★', 'Plage 50 m', 'Spa'],
     status: 'attente',
     price: '~ 4 000–5 800 €',
@@ -1548,6 +1671,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~6h-7h',
+      price: '~ 50–95 € (bus + TGV depuis La Rochelle)',
       steps: '🚌 Bus Île de Ré → Gare La Rochelle (~1h)<br>🚄 TGV La Rochelle → Paris Montparnasse (~2h35)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (4h45 directes Paris)'
     },
     pros: [
@@ -1574,6 +1698,8 @@ const DATA = [
     stars: '★★★',
     place: 'Saint-Brevin-les-Pins (44)',
     phone: '0240277526',
+    lat: 47.2469,
+    lng: -2.1739,
     tags: ['Maisonnette', '2 ch.', 'Hors La Rochelle'],
     status: 'attente',
     price: '~ 2 500–3 600 €',
@@ -1589,6 +1715,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~5h30-6h',
+      price: '~ 55–105 € (bus + TGV depuis Nantes)',
       steps: '🚌 Saint-Brévin → Nantes (~1h)<br>🚄 TGV Nantes → Paris Montparnasse (~2h05)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>🚗 Voiture : ~6h30 directes via Bordeaux/A10'
     },
     pros: [
@@ -1617,6 +1744,8 @@ const DATA = [
     stars: '★★★',
     place: 'Les Sables d\'Olonne (85 — Vendée)',
     phone: '0251213165',
+    lat: 46.4961,
+    lng: -1.7958,
     tags: ['Appart T3', '100 m plage', 'Train direct'],
     status: 'attente',
     price: '~ 2 500–3 800 €',
@@ -1632,6 +1761,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~5h-5h30',
+      price: '~ 50–100 € (Intercités + TGV via Nantes)',
       steps: '🚶 Résidence → Gare Les Sables (5-12 min à pied)<br>🚆 Intercités Les Sables → Nantes (~1h15)<br>🚄 TGV Nantes → Paris Montparnasse (~2h05)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     pros: [
@@ -1661,6 +1791,8 @@ const DATA = [
     stars: '★★★',
     place: 'Royan (17 — Charente-Maritime)',
     phone: '0411932222',
+    lat: 45.6231,
+    lng: -1.0292,
     tags: ['Appart 3 pièces', '150 m plage', 'Fidélité Odalys'],
     status: 'attente',
     price: '~ 2 700–3 800 €',
@@ -1676,6 +1808,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~5h-5h30',
+      price: '~ 60–110 € (TER Saintes + TGV)',
       steps: '🚆 TER Royan → Saintes (~30 min)<br>🚄 TGV Saintes → Paris Montparnasse (via Niort/Poitiers, ~3h)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)'
     },
     pros: [
@@ -1704,14 +1837,16 @@ const DATA = [
     stars: '★★★',
     place: 'Ronce-les-Bains / La Tremblade (17)',
     phone: '0491048704',
+    lat: 45.7892,
+    lng: -1.1561,
     pension: 'Pension complète & demi-pension',
-    tags: ['Village club', 'Pension complète', '☎️ Centrale tél.'],
-    status: 'relance',
-    price: '~ 3 800–5 500 €',
-    priceConfirmed: '',
+    tags: ['Village club', 'Pension complète', '🚫 HORS BUDGET'],
+    status: 'horsbudget',
+    price: '~ 9 000 € TTC (estimation tél.)',
+    priceConfirmed: '~ 9 000 € TTC',
     contact: '☎️ Centrale : 04 91 04 87 04 (L-V 9h-18h)',
-    chambres: '2 ch (à confirmer par tél.)',
-    climatisation: 'À confirmer par tél.',
+    chambres: '2 ch (à confirmer)',
+    climatisation: 'À confirmer',
     gareDist: '30 km gare Saujon/Royan',
     plageDist: '600 m de la plage',
     transportLR: {
@@ -1720,6 +1855,7 @@ const DATA = [
     },
     transportSMO: {
       total: '~6h-7h',
+      price: '~ 65–115 € (bus + TER + TGV)',
       steps: '🚌 Ronce → Saujon ou Royan (bus, ~30-45 min)<br>🚆 TER → Saintes (~30 min)<br>🚄 TGV Saintes → Paris Montparnasse (~3h)<br>🚇 Métro vers Bibli. F. Mitterrand (~25 min)<br>🚆 RER C → St-Michel-sur-Orge (~25 min)<br>⚠️ Voiture conseillée (~5h30 directes Paris)'
     },
     pros: [
@@ -1733,14 +1869,14 @@ const DATA = [
       'Matériel prêté (raquettes, vélos...)'
     ],
     cons: [
-      '📞 Devis UNIQUEMENT par téléphone (pas par mail)',
-      '💰 Budget probablement > 4 000 € en pension complète',
+      '🚫 HORS BUDGET : ~9 000 € TTC pour 3 semaines (> 2× budget max)',
+      '📞 Devis uniquement par téléphone (pas par mail)',
       'Pas de gare directe (30 km Saujon/Royan + bus)',
       '6 min à pied du casino, 600 m plage',
       'Clubs ados (13-18) à confirmer',
       'Lits superposés possibles à vérifier'
     ],
-    notes: '⚠️ Réponse 26/05 12h06 : l\'équipe locale de Ronce-les-Bains redirige vers la CENTRALE de réservations Villages Clubs du Soleil au ☎️ 04 91 04 87 04 (L-V 9h-18h, S 9h-17h). Aucun devis par mail possible. À APPELER pour : 3 semaines 08→29/08, 4 pers. (2 ad. + ados 13/18), 2 ch. séparées, pension complète + comparatif demi-pension, clubs ados, tarif long séjour 21 nuits, conditions annulation.',
+    notes: '📞 Estimation reçue par téléphone : ~9 000 € TTC pour 3 semaines en pension complète (4 personnes). ❌ HORS BUDGET (max 4 000 €). L\'option pension complète, bien que séduisante en confort, n\'est pas viable financièrement. Option à écarter.',
     url: 'https://www.villagesclubsdusoleil.com/fr/nos-destinations/sejour-a-la-mer/ronce-les-bains'
   }
 ];
@@ -1751,13 +1887,14 @@ const STATUS_LABEL = {
   relance: 'À relancer',
   favori: '★ Favori',
   complet: '🚫 Complet',
+  horsbudget: '🚫 Hors budget',
   elimine: 'Écarté'
 };
 
 function renderSummary() {
-  const counts = { attente: 0, devis: 0, relance: 0, favori: 0, complet: 0, elimine: 0 };
+  const counts = { attente: 0, devis: 0, relance: 0, favori: 0, complet: 0, horsbudget: 0, elimine: 0 };
   DATA.forEach(d => counts[d.status] = (counts[d.status] || 0) + 1);
-  const horsCourse = counts.complet + counts.elimine;
+  const horsCourse = counts.complet + counts.elimine + counts.horsbudget;
   document.getElementById('summary').innerHTML = `
     <div class="stat">
       <div class="stat-label">Devis reçus</div>
@@ -1889,6 +2026,7 @@ function renderCard(d, dim) {
             <div class="transport-band transport-smo">
               <div class="transport-lbl">🏠 Trajet retour à St-Michel-sur-Orge</div>
               <div class="transport-smo-total">⏱️ ${d.transportSMO.total} <span class="transport-smo-mode">en train (porte à porte)</span></div>
+              ${d.transportSMO.price ? `<div class="transport-smo-price">💶 ${d.transportSMO.price} <span class="transport-smo-pricenote">par personne</span></div>` : ''}
               <div class="transport-smo-steps">${d.transportSMO.steps}</div>
             </div>
           ` : ''}
@@ -1911,6 +2049,30 @@ function renderCard(d, dim) {
               <div class="val">${d.gareDist || '—'}</div>
             </div>
           </div>
+
+          ${d.lat && d.lng ? `
+            <div class="map-section">
+              <div class="map-header">
+                <span class="map-title">📍 Localisation</span>
+                <div class="map-actions">
+                  <a href="https://www.openstreetmap.org/?mlat=${d.lat}&mlon=${d.lng}#map=15/${d.lat}/${d.lng}" target="_blank" rel="noopener" class="map-btn">🗺️ Plein écran</a>
+                  <a href="https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}" target="_blank" rel="noopener" class="map-btn map-btn-primary">🚗 Itinéraire</a>
+                </div>
+              </div>
+              <div class="map-container">
+                <iframe
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=${d.lng - 0.02}%2C${d.lat - 0.012}%2C${d.lng + 0.02}%2C${d.lat + 0.012}&amp;layer=mapnik&amp;marker=${d.lat}%2C${d.lng}"
+                  loading="lazy"
+                  class="map-iframe"
+                  title="Carte localisation ${d.title}"
+                ></iframe>
+              </div>
+              <div class="map-coords">
+                <span>📐 ${d.lat.toFixed(4)}°N, ${Math.abs(d.lng).toFixed(4)}°O</span>
+                <a href="https://www.google.com/maps?q=${d.lat},${d.lng}" target="_blank" rel="noopener">Voir sur Google Maps →</a>
+              </div>
+            </div>
+          ` : ''}
 
           ${quotesBlock}
 
@@ -1949,8 +2111,8 @@ function render() {
   renderSummary();
   const order = { favori: 0, devis: 1, attente: 2, relance: 3, complet: 4, elimine: 5 };
   const sorted = [...DATA].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
-  const actives = sorted.filter(d => d.status !== 'complet' && d.status !== 'elimine');
-  const horsCourse = sorted.filter(d => d.status === 'complet' || d.status === 'elimine');
+  const actives = sorted.filter(d => d.status !== 'complet' && d.status !== 'elimine' && d.status !== 'horsbudget');
+  const horsCourse = sorted.filter(d => d.status === 'complet' || d.status === 'elimine' || d.status === 'horsbudget');
 
   let html = actives.map(d => renderCard(d, false)).join('');
   if (horsCourse.length) {
