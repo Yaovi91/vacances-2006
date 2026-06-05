@@ -998,6 +998,124 @@
   }
   .comment-send:active { transform: scale(0.95); }
 
+  /* ============ DEVIS COLLECTÉS (collaboratif) ============ */
+  .quotes-section-collab {
+    margin: 12px 0;
+    padding: 12px;
+    background: linear-gradient(135deg, #f0e8d4, #e8dcc0);
+    border-radius: 14px;
+    border: 1px solid rgba(200,155,60,0.3);
+  }
+  .quotes-section-head {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: #6b5424;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .quotes-count {
+    background: var(--gold);
+    color: white;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+  }
+  .quotes-collected-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .quote-collected {
+    background: white;
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .quote-collected-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quote-collected-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .quote-collected-amount {
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--sea-deep);
+    line-height: 1.1;
+  }
+  .quote-collected-author {
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .quote-collected-note {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(0,0,0,0.08);
+    font-size: 12px;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .quote-add-form {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: stretch;
+    background: white;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1.5px dashed rgba(200,155,60,0.5);
+  }
+  .quote-amount {
+    flex: 1;
+    min-width: 110px;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ink);
+    box-sizing: border-box;
+  }
+  .quote-note {
+    flex: 2;
+    min-width: 140px;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ink);
+    box-sizing: border-box;
+  }
+  .quote-amount:focus, .quote-note:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+  .quote-add-btn {
+    background: var(--gold);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .quote-add-btn:active { transform: scale(0.95); }
+  .quote-add-btn:hover { background: #b58a32; }
+
   /* ============ MODALES ============ */
   .modal-overlay {
     position: fixed; inset: 0;
@@ -1247,7 +1365,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — 🗺️ Cartes de localisation + ❌ Village Club Soleil hors budget (~9000€)</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — 💶 Devis collaboratifs + bug saisie corrigé</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -2313,12 +2431,13 @@ function logout() {
 
 function getCardInteractions(cardId) {
   if (!appState.interactions[cardId]) {
-    appState.interactions[cardId] = { likes: [], dislikes: [], overbudget: [], comments: [], rankings: {} };
+    appState.interactions[cardId] = { likes: [], dislikes: [], overbudget: [], comments: [], rankings: {}, quotes: [] };
   }
   // Migration : ajouter les nouveaux tableaux si l'interaction existe sans
   const i = appState.interactions[cardId];
   if (!i.dislikes) i.dislikes = [];
   if (!i.overbudget) i.overbudget = [];
+  if (!i.quotes) i.quotes = [];
   return i;
 }
 
@@ -2389,6 +2508,42 @@ function renderSocialZone(cardId) {
          }).join('')}
        </div>` : '';
 
+  // Devis collectés
+  const quotes = inter.quotes || [];
+  const formatAmount = a => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(a);
+  const quotesListHtml = quotes.length > 0
+    ? `<div class="quotes-collected-list">
+         ${quotes.map((q, idx) => {
+           const m = getMember(q.memberId);
+           if (!m) return '';
+           return `<div class="quote-collected">
+             <div class="quote-collected-head">
+               <div class="comment-avatar" style="background:${m.color}">${getInitials(m.name)}</div>
+               <div class="quote-collected-meta">
+                 <div class="quote-collected-amount">${formatAmount(q.amount)}</div>
+                 <div class="quote-collected-author">${escapeHtml(m.name)} · ${formatTimeAgo(q.createdAt)}</div>
+               </div>
+               ${q.memberId === currentUser.id ? `<button onclick="event.stopPropagation();deleteQuote('${cardId}',${idx})" style="background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:18px;padding:0 4px;line-height:1" title="Supprimer">×</button>` : ''}
+             </div>
+             ${q.note ? `<div class="quote-collected-note">${escapeHtml(q.note)}</div>` : ''}
+           </div>`;
+         }).join('')}
+       </div>` : '';
+  
+  const quotesSection = `
+    <div class="quotes-section-collab">
+      <div class="quotes-section-head">
+        💶 Devis collectés ${quotes.length > 0 ? `<span class="quotes-count">(${quotes.length})</span>` : ''}
+      </div>
+      ${quotesListHtml}
+      <div class="quote-add-form">
+        <input type="number" class="quote-amount" id="quote-amount-${cardId}" placeholder="Montant en €" min="0" step="1" />
+        <input type="text" class="quote-note" id="quote-note-${cardId}" placeholder="Note (option, config, etc.)" maxlength="120" />
+        <button class="quote-add-btn" onclick="event.stopPropagation();addQuote('${cardId}')">+ Ajouter</button>
+      </div>
+    </div>
+  `;
+
   return `
     <div class="social-zone" onclick="event.stopPropagation()">
       <div class="social-header">👨‍👩‍👧‍👦 Avis de la famille</div>
@@ -2410,6 +2565,7 @@ function renderSocialZone(cardId) {
       ${dislikesHtml}
       ${overbudgetHtml}
       ${rankingsHtml}
+      ${quotesSection}
       ${commentsHtml}
       <div class="comment-form">
         <input type="text" class="comment-input" id="comment-input-${cardId}" placeholder="Ton avis..." maxlength="280" />
@@ -2546,12 +2702,75 @@ async function deleteComment(cardId, idx) {
   await saveAppState();
 }
 
+async function addQuote(cardId) {
+  const amountInput = document.getElementById('quote-amount-' + cardId);
+  const noteInput = document.getElementById('quote-note-' + cardId);
+  const amount = parseFloat(amountInput.value);
+  const note = noteInput.value.trim();
+  if (!amount || amount <= 0) {
+    alert('Saisis un montant en euros (sans le €)');
+    amountInput.focus();
+    return;
+  }
+  const inter = getCardInteractions(cardId);
+  if (!inter.quotes) inter.quotes = [];
+  inter.quotes.push({
+    memberId: currentUser.id,
+    amount: amount,
+    note: note,
+    createdAt: new Date().toISOString()
+  });
+  amountInput.value = '';
+  noteInput.value = '';
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
+async function deleteQuote(cardId, idx) {
+  if (!confirm('Supprimer ce devis ?')) return;
+  const inter = getCardInteractions(cardId);
+  inter.quotes.splice(idx, 1);
+  rerenderKeepingOpen();
+  await saveAppState();
+}
+
 function rerenderKeepingOpen() {
+  // Sauvegarder l'état des inputs et le focus avant de re-render
   const openIds = Array.from(document.querySelectorAll('.card.open')).map(c => c.dataset.id);
+  const inputState = {};
+  document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
+    if (input.id) {
+      inputState[input.id] = {
+        value: input.value,
+        focused: input === document.activeElement,
+        selStart: input.selectionStart,
+        selEnd: input.selectionEnd
+      };
+    }
+  });
+  
   render();
+  
+  // Réouvrir les cartes
   openIds.forEach(id => {
     const card = document.querySelector(`[data-id="${id}"]`);
     if (card) card.classList.add('open');
+  });
+  
+  // Restaurer les inputs et le focus
+  Object.entries(inputState).forEach(([inputId, state]) => {
+    const input = document.getElementById(inputId);
+    if (input) {
+      input.value = state.value;
+      if (state.focused) {
+        input.focus();
+        try {
+          if (state.selStart != null && input.type !== 'number') {
+            input.setSelectionRange(state.selStart, state.selEnd);
+          }
+        } catch (e) { /* certains inputs ne supportent pas setSelectionRange */ }
+      }
+    }
   });
 }
 
@@ -2631,10 +2850,15 @@ function closeTeamModal() {
 }
 
 let refreshInterval = null;
+function isTyping() {
+  const el = document.activeElement;
+  return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA');
+}
 function startAutoRefresh() {
   if (refreshInterval) clearInterval(refreshInterval);
   refreshInterval = setInterval(async () => {
     if (syncInProgress) return;
+    if (isTyping()) return; // Ne pas refresh pendant la saisie
     const prevState = JSON.stringify(appState.interactions);
     await fetchAppState();
     if (JSON.stringify(appState.interactions) !== prevState) {
@@ -2671,7 +2895,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (logoutBtn) logoutBtn.addEventListener('click', logout);
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && currentUser) {
+    if (!document.hidden && currentUser && !isTyping()) {
       fetchAppState().then(() => rerenderKeepingOpen());
     }
   });
