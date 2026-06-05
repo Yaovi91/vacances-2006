@@ -1249,6 +1249,16 @@
     font-size: 16px;
     min-width: 22px;
   }
+  .personal-rank-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: rgba(0,0,0,0.05);
+    padding: 1px 6px;
+    border-radius: 6px;
+    min-width: 24px;
+    text-align: center;
+  }
   .personal-card-num {
     font-weight: 800;
     color: var(--coral);
@@ -1416,9 +1426,9 @@
   <div class="modal-box">
     <button class="modal-close" onclick="closeTeamModal()">✕</button>
     <h2>🏆 Classement Famille</h2>
-    <p class="modal-desc">Score = ❤️ × 2 − 👎 × 2 − 🚫 × 1 + ⭐ classement perso (top 1 = +10, top 2 = +7, top 3 = +5)</p>
+    <p class="modal-desc">Score = ❤️ × 2 − 👎 × 2 − 🚫 × 1 + ⭐ classement perso (🥇 +10, 🥈 +7, 🥉 +5, 🏅 T4 +3, 🏅 T5 +1)</p>
     <div id="team-rankings"></div>
-    <h3>🎯 Top 3 personnel de chacun</h3>
+    <h3>🎯 Top 5 personnel de chacun</h3>
     <div id="team-personal-rankings"></div>
     <h3>👥 Membres</h3>
     <div id="team-members-list"></div>
@@ -1431,7 +1441,7 @@
     <div class="eyebrow">Suivi · Famille</div>
     <h1>3 semaines en <em>août 2026</em></h1>
     <div class="sub">Comparatif des hébergements près de La Rochelle (jusqu'à 2h) · sam 8 → sam 29 août</div>
-    <div class="last-updated">Mis à jour le 29 mai 2026 — 🎯 Top 3 personnel visible dans le classement famille</div>
+    <div class="last-updated">Mis à jour le 29 mai 2026 — ⭐ Classement passé en Top 5 (5 places au lieu de 3)</div>
 
     <div class="intro">
       Voici l'état actuel des recherches d'hébergement. Touchez une option pour voir tous les détails (chambres, prix, points forts, contacts, liens). Les options confirmées disponibles sont marquées d'un bandeau vert ✅. Les options complètes sont reléguées en bas de page.
@@ -2495,6 +2505,12 @@ function logout() {
   initAuth();
 }
 
+// Helpers pour le système Top 5
+const RANK_MEDAL = { 1: '🥇', 2: '🥈', 3: '🥉', 4: '🏅', 5: '🏅' };
+const RANK_POINTS = { 1: 10, 2: 7, 3: 5, 4: 3, 5: 1 };
+function getMedal(r) { return RANK_MEDAL[r] || ''; }
+function getPoints(r) { return RANK_POINTS[r] || 0; }
+
 function getCardInteractions(cardId) {
   if (!appState.interactions[cardId]) {
     appState.interactions[cardId] = { likes: [], dislikes: [], overbudget: [], comments: [], rankings: {}, quotes: [] };
@@ -2550,10 +2566,9 @@ function renderSocialZone(cardId) {
   const rankEntries = Object.entries(inter.rankings || {}).filter(([uid]) => getMember(uid));
   const rankingsHtml = rankEntries.length > 0
     ? `<div class="rankings-display">
-         ${rankEntries.map(([uid, r]) => {
+         ${rankEntries.sort((a,b) => a[1] - b[1]).map(([uid, r]) => {
            const m = getMember(uid);
-           const medal = r === 1 ? '🥇' : r === 2 ? '🥈' : '🥉';
-           return `<span class="ranking-chip" style="background:${m.color}22">${medal} ${escapeHtml(m.name)}</span>`;
+           return `<span class="ranking-chip" style="background:${m.color}22">${getMedal(r)} ${escapeHtml(m.name)} <span style="opacity:0.6;font-size:10px">T${r}</span></span>`;
          }).join('')}
        </div>` : '';
 
@@ -2624,7 +2639,7 @@ function renderSocialZone(cardId) {
           🚫 ${isOverBudget ? 'Hors budget' : 'Trop cher'}
         </button>
         <button class="social-btn ${myRank ? 'ranked' : ''}" onclick="event.stopPropagation();openRankModal('${cardId}')">
-          ${myRank ? (myRank === 1 ? '🥇' : myRank === 2 ? '🥈' : '🥉') + ' Top ' + myRank : '⭐ Classer'}
+          ${myRank ? getMedal(myRank) + ' Top ' + myRank : '⭐ Classer'}
         </button>
       </div>
       ${likesHtml}
@@ -2704,14 +2719,14 @@ function openRankModal(cardId) {
   modal.innerHTML = `
     <div class="modal-box">
       <h2>⭐ Mon classement</h2>
-      <p class="modal-desc">Place <strong>${escapeHtml(cardName)}</strong> dans ton top 3</p>
+      <p class="modal-desc">Place <strong>${escapeHtml(cardName)}</strong> dans ton top 5</p>
       <div class="rank-options">
-        ${[1, 2, 3].map(r => {
-          const medal = r === 1 ? '🥇' : r === 2 ? '🥈' : '🥉';
+        ${[1, 2, 3, 4, 5].map(r => {
+          const medal = getMedal(r);
           const taken = myUsedRanks[r] && myUsedRanks[r] !== cardId;
           const takenName = taken ? (DATA.find(d => d.id === myUsedRanks[r])?.title || '') : '';
           return `<button class="rank-option ${myRank === r ? 'selected' : ''}" onclick="setRank('${cardId}', ${r})">
-            <span><span class="medal">${medal}</span>Top ${r}</span>
+            <span><span class="medal">${medal}</span>Top ${r} <span style="font-size:10px;color:var(--ink-soft);font-weight:500">+${getPoints(r)} pts</span></span>
             ${taken ? `<span class="rank-taken">⚠️ déjà:<br>${escapeHtml(takenName.substring(0, 22))}${takenName.length > 22 ? '…' : ''}</span>` : ''}
           </button>`;
         }).join('')}
@@ -2849,7 +2864,7 @@ function openTeamModal() {
     score -= (inter.dislikes || []).length * 2; // malus pour dislikes
     score -= (inter.overbudget || []).length * 1; // léger malus pour hors budget
     Object.values(inter.rankings || {}).forEach(r => {
-      score += r === 1 ? 10 : r === 2 ? 7 : r === 3 ? 5 : 0;
+      score += getPoints(r);
     });
     // On garde toutes les options où il y a eu une activité
     const hasActivity = (inter.likes || []).length > 0 || (inter.dislikes || []).length > 0 ||
@@ -2867,18 +2882,19 @@ function openTeamModal() {
         const likesCount = (inter.likes || []).length;
         const dislikesCount = (inter.dislikes || []).length;
         const overbudgetCount = (inter.overbudget || []).length;
-        const top1 = Object.values(inter.rankings || {}).filter(r => r === 1).length;
-        const top2 = Object.values(inter.rankings || {}).filter(r => r === 2).length;
-        const top3 = Object.values(inter.rankings || {}).filter(r => r === 3).length;
+        const topCounts = {};
+        [1,2,3,4,5].forEach(r => {
+          topCounts[r] = Object.values(inter.rankings || {}).filter(rk => rk === r).length;
+        });
         const cls = x.score > 0 && idx === 0 ? 'gold' : x.score > 0 && idx === 1 ? 'silver' : x.score > 0 && idx === 2 ? 'bronze' : '';
         const pos = x.score > 0 && idx === 0 ? '🥇' : x.score > 0 && idx === 1 ? '🥈' : x.score > 0 && idx === 2 ? '🥉' : '#' + (idx + 1);
         const parts = [];
         if (likesCount) parts.push(`❤️ ${likesCount}`);
         if (dislikesCount) parts.push(`👎 ${dislikesCount}`);
         if (overbudgetCount) parts.push(`🚫 ${overbudgetCount}`);
-        if (top1) parts.push(`🥇 ${top1}`);
-        if (top2) parts.push(`🥈 ${top2}`);
-        if (top3) parts.push(`🥉 ${top3}`);
+        [1,2,3,4,5].forEach(r => {
+          if (topCounts[r]) parts.push(`${getMedal(r)} ${topCounts[r]}${r >= 4 ? ' (T'+r+')' : ''}`);
+        });
         const scoreClass = x.score < 0 ? 'style="color:var(--rose)"' : '';
         return `<div class="team-rank-row ${cls}">
           <div class="team-rank-pos">${pos}</div>
@@ -2891,30 +2907,29 @@ function openTeamModal() {
       }).join('');
   document.getElementById('team-rankings').innerHTML = rankingsHtml;
   
-  // ============ TOP 3 PERSONNEL DE CHAQUE MEMBRE ============
+  // ============ TOP 5 PERSONNEL DE CHAQUE MEMBRE ============
   const personalHtml = appState.members.length === 0
     ? '<div style="text-align:center;padding:14px;color:var(--ink-soft);font-size:13px">Aucun membre n\'est encore inscrit.</div>'
     : appState.members.map(m => {
-        // Récupérer le top 1/2/3 de ce membre
-        const myRanks = { 1: null, 2: null, 3: null };
+        // Récupérer le top 1 à 5 de ce membre
+        const myRanks = { 1: null, 2: null, 3: null, 4: null, 5: null };
         Object.entries(appState.interactions).forEach(([cardId, inter]) => {
           if (inter.rankings && inter.rankings[m.id]) {
             const rank = inter.rankings[m.id];
             const card = DATA.find(d => d.id === cardId);
-            if (card && [1, 2, 3].includes(rank)) {
+            if (card && [1, 2, 3, 4, 5].includes(rank)) {
               myRanks[rank] = card;
             }
           }
         });
-        const hasAny = myRanks[1] || myRanks[2] || myRanks[3];
+        const hasAny = myRanks[1] || myRanks[2] || myRanks[3] || myRanks[4] || myRanks[5];
         
         const rankLineHtml = (rank) => {
           const card = myRanks[rank];
-          const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉';
           if (!card) {
-            return `<div class="personal-rank-line empty"><span class="personal-medal">${medal}</span><span class="personal-empty">— pas encore choisi —</span></div>`;
+            return `<div class="personal-rank-line empty"><span class="personal-medal">${getMedal(rank)}</span><span class="personal-rank-label">T${rank}</span><span class="personal-empty">— pas encore choisi —</span></div>`;
           }
-          return `<div class="personal-rank-line"><span class="personal-medal">${medal}</span><span class="personal-card-num">${card.num}</span><span class="personal-card-title">${escapeHtml(card.title)}</span></div>`;
+          return `<div class="personal-rank-line"><span class="personal-medal">${getMedal(rank)}</span><span class="personal-rank-label">T${rank}</span><span class="personal-card-num">${card.num}</span><span class="personal-card-title">${escapeHtml(card.title)}</span></div>`;
         };
         
         return `<div class="personal-rank-block">
@@ -2927,6 +2942,8 @@ function openTeamModal() {
             ${rankLineHtml(1)}
             ${rankLineHtml(2)}
             ${rankLineHtml(3)}
+            ${rankLineHtml(4)}
+            ${rankLineHtml(5)}
           </div>
         </div>`;
       }).join('');
